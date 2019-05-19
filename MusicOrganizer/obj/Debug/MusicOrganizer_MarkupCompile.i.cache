@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\App.xaml
-11892971807
+9-1036461575
 2-155374656
-15480666348
+23802463126
 27-1576367195
-Views\MainWindow.xaml;
+Views\AlbumView.xaml;Views\DeleteAlbumView.xaml;Views\InsertAlbumView.xaml;Views\InsertArtistView.xaml;Views\InsertTrackView.xaml;Views\MainWindow.xaml;Views\UpdateAlbumView.xaml;Views\UpdateArtistView.xaml;Views\UpdateTrackView.xaml;
 
-False
+True
 
