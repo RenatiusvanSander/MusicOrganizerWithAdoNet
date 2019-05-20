@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MusicOrganizer.ViewModels
 {
-    class AlbumViewModel
+    class AlbumViewModel : ViewModelBase
     {
     }
 }
