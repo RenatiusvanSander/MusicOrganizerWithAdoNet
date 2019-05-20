@@ -77,6 +77,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\DeleteAlbumViewModel.cs" />
+    <Compile Include="ViewModels\InsertAlbumViewModel.cs" />
+    <Compile Include="ViewModels\InsertArtistViewModel.cs" />
+    <Compile Include="ViewModels\InsertTrackViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\UpdateAlbumViewModel.cs" />
+    <Compile Include="ViewModels\UpdateArtistViewModel.cs" />
+    <Compile Include="ViewModels\UpdateTrackViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
