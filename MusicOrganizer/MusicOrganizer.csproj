@@ -104,7 +104,6 @@
     </Compile>
     <Compile Include="ViewModels\AlbumViewModel.cs" />
     <Compile Include="ViewModels\DeleteAlbumViewModel.cs" />
-    <Compile Include="ViewModels\INorifyDataError.cs" />
     <Compile Include="ViewModels\InsertAlbumViewModel.cs" />
     <Compile Include="ViewModels\InsertArtistViewModel.cs" />
     <Compile Include="ViewModels\InsertTrackViewModel.cs" />

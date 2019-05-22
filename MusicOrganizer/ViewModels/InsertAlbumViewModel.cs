@@ -1,9 +1,5 @@
 ﻿using MusicOrganizer.Models.LogicModels;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace MusicOrganizer.ViewModels
@@ -156,7 +152,7 @@ namespace MusicOrganizer.ViewModels
                 ViewModelsErrorHandler(e);
             }
 
-            MessageBox.Show("Album has successful added.");
+            MessageBox.Show("Album has successful been added.");
         }
     }
 }
