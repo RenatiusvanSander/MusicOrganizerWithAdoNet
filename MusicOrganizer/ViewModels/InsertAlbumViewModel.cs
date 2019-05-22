@@ -139,7 +139,7 @@ namespace MusicOrganizer.ViewModels
         {
 
             /* Tries to add album into database. If this fails error is
-             * shown in message box to user. */
+             * shown in a message box to user. */
             try
             {
                 DatabaseHandler.AddAlbum(AlbumArtist,
