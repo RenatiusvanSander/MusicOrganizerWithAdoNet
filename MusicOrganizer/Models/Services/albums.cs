@@ -14,14 +14,20 @@ namespace MusicOrganizer.Models.Services
     
     public partial class albums
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public albums()
+        {
+            this.tracks = new HashSet<tracks>();
+        }
+    
         public decimal album_id { get; set; }
-        public string title { get; set; }
         public decimal artist_id { get; set; }
+        public string title { get; set; }
         public string Picture { get; set; }
         public string TrackCount { get; set; }
-        public decimal track_id { get; set; }
     
-        public virtual tracks tracks { get; set; }
         public virtual artists artists { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<tracks> tracks { get; set; }
     }
 }

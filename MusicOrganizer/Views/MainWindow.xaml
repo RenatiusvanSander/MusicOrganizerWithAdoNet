@@ -1,18 +1,61 @@
-﻿<Window x:Class="MusicOrganizer.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MusicOrganizer"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+﻿<Window
+    x:Class="MusicOrganizer.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MusicOrganizer"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="1920"
+    Height="1080"
+    mc:Ignorable="d"
+    Title="MusicOrganizer">
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <DataGrid Grid.Column="1" x:Name="albumDataGrid" x:FieldModifier="public" AutoGenerateColumns="False" ColumnWidth="*">
-            
+        <DataGrid
+            x:Name="albumDataGrid"
+            Grid.Column="1"
+            AutoGenerateColumns="False"
+            ColumnWidth="*"
+            x:FieldModifier="public">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="AlbumName" Binding="{Binding Albums.title}"/>
+                <DataGridTextColumn Header="Artist" Binding="{Binding Albums.title}"/>
+                <DataGridTextColumn Header="Tracks" Binding="{Binding Albums.TrackCount}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="AlbumPicture" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Albums.Picture}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Action" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button x:Name="insertButton" Content="Insert" />
+                                <Button x:Name="updateButton" Content="Update" />
+                                <Button x:Name="deleteButton" Content="Delete" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
         </DataGrid>
+        <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="44" Margin="60,62,0,0" VerticalAlignment="Top" Width="132" Click="ShowInseretArtistView_Click"/>
     </Grid>
+
 </Window>

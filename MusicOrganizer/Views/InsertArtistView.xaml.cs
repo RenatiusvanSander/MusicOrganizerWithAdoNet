@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using MusicOrganizer.ViewModels;
 
 namespace MusicOrganizer.Views
 {
@@ -19,9 +8,28 @@ namespace MusicOrganizer.Views
     /// </summary>
     public partial class InsertArtistView : Window
     {
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
         public InsertArtistView()
         {
             InitializeComponent();
+            insertArtistViewModel = new InsertArtistViewModel();
+            DataContext = insertArtistViewModel;
+        }
+
+        private InsertArtistViewModel insertArtistViewModel;
+
+        /// <summary>
+        /// Inserts an artist on button click "Add Artist" into database table
+        /// artist.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void InsertArtistIntoDB_Click(object sender, RoutedEventArgs e)
+        {
+            insertArtistViewModel.InsertArtistIntoDB();
         }
     }
 }

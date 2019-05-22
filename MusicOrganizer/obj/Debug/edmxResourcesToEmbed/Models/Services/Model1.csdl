@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="musicdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="albums">
+    <Key>
+      <PropertyRef Name="album_id" />
+    </Key>
+    <Property Name="album_id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="artist_id" Type="Decimal" Nullable="false" />
+    <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Picture" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TrackCount" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="artists" Relationship="Self.albums_ibfk_1" FromRole="albums" ToRole="artists" />
+    <NavigationProperty Name="tracks" Relationship="Self.tracks_ibfk_1" FromRole="albums" ToRole="tracks" />
+  </EntityType>
+  <EntityType Name="artists">
+    <Key>
+      <PropertyRef Name="artist_id" />
+    </Key>
+    <Property Name="artist_id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="History" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Picture" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Website" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="albums" Relationship="Self.albums_ibfk_1" FromRole="artists" ToRole="albums" />
+    <NavigationProperty Name="tracks" Relationship="Self.tracks_ibfk_2" FromRole="artists" ToRole="tracks" />
+  </EntityType>
+  <EntityType Name="tracks">
+    <Key>
+      <PropertyRef Name="track_id" />
+    </Key>
+    <Property Name="track_id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="album_id" Type="Decimal" Nullable="false" />
+    <Property Name="artist_id" Type="Decimal" Nullable="false" />
+    <Property Name="track_title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="duration" Type="Time" Nullable="false" />
+    <Property Name="album_position" Type="Int32" Nullable="false" />
+    <Property Name="composer" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="disc_number" Type="Int32" Nullable="false" />
+    <Property Name="genre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="lyricist" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="bpm" Type="Int32" Nullable="false" />
+    <Property Name="filepath" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="albums" Relationship="Self.tracks_ibfk_1" FromRole="tracks" ToRole="albums" />
+    <NavigationProperty Name="artists" Relationship="Self.tracks_ibfk_2" FromRole="tracks" ToRole="artists" />
+  </EntityType>
+  <Association Name="albums_ibfk_1">
+    <End Role="artists" Type="Self.artists" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="albums" Type="Self.albums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="artists">
+        <PropertyRef Name="artist_id" />
+      </Principal>
+      <Dependent Role="albums">
+        <PropertyRef Name="artist_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tracks_ibfk_1">
+    <End Role="albums" Type="Self.albums" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="albums">
+        <PropertyRef Name="album_id" />
+      </Principal>
+      <Dependent Role="tracks">
+        <PropertyRef Name="album_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tracks_ibfk_2">
+    <End Role="artists" Type="Self.artists" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="artists">
+        <PropertyRef Name="artist_id" />
+      </Principal>
+      <Dependent Role="tracks">
+        <PropertyRef Name="artist_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MusicDBEntityDataModel" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="albums" EntityType="Self.albums" />
+    <EntitySet Name="artists" EntityType="Self.artists" />
+    <EntitySet Name="tracks" EntityType="Self.tracks" />
+    <AssociationSet Name="albums_ibfk_1" Association="Self.albums_ibfk_1">
+      <End Role="artists" EntitySet="artists" />
+      <End Role="albums" EntitySet="albums" />
+    </AssociationSet>
+    <AssociationSet Name="tracks_ibfk_1" Association="Self.tracks_ibfk_1">
+      <End Role="albums" EntitySet="albums" />
+      <End Role="tracks" EntitySet="tracks" />
+    </AssociationSet>
+    <AssociationSet Name="tracks_ibfk_2" Association="Self.tracks_ibfk_2">
+      <End Role="artists" EntitySet="artists" />
+      <End Role="tracks" EntitySet="tracks" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
