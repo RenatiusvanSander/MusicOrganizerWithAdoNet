@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
-        Title="InsertAlbumView" Height="450" Width="800">
+        Title="Insert Album" Height="450" Width="800">
     <Grid>
-        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,26,0,0" TextWrapping="Wrap" Text="{Binding AlbumTitle}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,87,0,0" TextWrapping="Wrap" Text="{Binding AlbumPicture}" VerticalAlignment="Top" Width="352"/>
+        <Button Name="AddAlbumButton" Content="Add Album" HorizontalAlignment="Left" Height="51" Margin="50,271,0,0" VerticalAlignment="Top" Width="218" Click="AddAlbumButton_Click" IsEnabled="{Binding CanAddAlbum}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,202,0,0" TextWrapping="NoWrap" Text="{Binding AlbumArtist}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,144,0,0" TextWrapping="Wrap" Text="{Binding AlbumCountTracks}" VerticalAlignment="Top" Width="352"/>
     </Grid>
 </Window>

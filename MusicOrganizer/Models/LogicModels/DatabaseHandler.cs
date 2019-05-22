@@ -1,6 +1,7 @@
 ﻿using MusicOrganizer.Models.Services;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace MusicOrganizer.Models.LogicModels
@@ -95,6 +96,51 @@ namespace MusicOrganizer.Models.LogicModels
         {
             throw new Exception("MySQL connection aborted. Please check" +
                     " connectivity and mysql service.", exception);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="albumArtist">string</param>
+        /// <param name="albumTitle">string</param>
+        /// <param name="albumPicture">string</param>
+        /// <param name="albumCountTracks">string</param>
+        public static void AddAlbum(string albumArtist,
+            string albumTitle,
+            string albumPicture,
+            string albumCountTracks)
+        {
+            artists artist;
+            albums newAlbum;
+
+            // Try to get artist and store new album into database.
+            try
+            {
+                artist = musicDBModel.artists.
+                                Where(a => a.Name == albumArtist)
+                                .SingleOrDefault();
+
+                newAlbum = new albums()
+                {
+                    artists = artist,
+                    Picture = albumPicture,
+                    title = albumTitle,
+                    TrackCount = albumCountTracks
+                };
+                musicDBModel.albums.Add(newAlbum);
+
+                musicDBModel.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                ThrowException(e);
+            }
+        }
+
+        // Refactor to use for every where and different queries.
+        private static DbSet GetDbSetObject()
+        {
+            return null;
         }
     }
 }
