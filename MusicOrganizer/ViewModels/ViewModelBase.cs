@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace MusicOrganizer.ViewModels
 {
@@ -11,6 +13,7 @@ namespace MusicOrganizer.ViewModels
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
 
+        #region inotifypropertychanged
         /// <summary>
         /// EventHandler for a property has changed.
         /// </summary>
@@ -26,5 +29,22 @@ namespace MusicOrganizer.ViewModels
             PropertyChanged?.Invoke(this,
                 new PropertyChangedEventArgs(propertyName));
         }
+        #endregion
+
+        #region errorhandler
+
+        /// <summary>
+        /// Handles every error inside a ViewModel.
+        /// </summary>
+        /// <param name="error">Exception</param>
+        public void ViewModelsErrorHandler(Exception error)
+        {
+            MessageBox.Show($"{error.Message} {error.InnerException}",
+                "Connection error",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+        }
+
+        #endregion
     }
 }

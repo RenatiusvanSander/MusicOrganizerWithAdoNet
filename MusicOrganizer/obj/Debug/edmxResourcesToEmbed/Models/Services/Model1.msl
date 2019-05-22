@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="musicdbModelStoreContainer" CdmEntityContainer="MusicDBEntityDataModel">
+    <EntitySetMapping Name="albums">
+      <EntityTypeMapping TypeName="musicdbModel.albums">
+        <MappingFragment StoreEntitySet="albums">
+          <ScalarProperty Name="album_id" ColumnName="album_id" />
+          <ScalarProperty Name="artist_id" ColumnName="artist_id" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="TrackCount" ColumnName="TrackCount" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="artists">
+      <EntityTypeMapping TypeName="musicdbModel.artists">
+        <MappingFragment StoreEntitySet="artists">
+          <ScalarProperty Name="artist_id" ColumnName="artist_id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="History" ColumnName="History" />
+          <ScalarProperty Name="Picture" ColumnName="Picture" />
+          <ScalarProperty Name="Website" ColumnName="Website" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tracks">
+      <EntityTypeMapping TypeName="musicdbModel.tracks">
+        <MappingFragment StoreEntitySet="tracks">
+          <ScalarProperty Name="track_id" ColumnName="track_id" />
+          <ScalarProperty Name="album_id" ColumnName="album_id" />
+          <ScalarProperty Name="artist_id" ColumnName="artist_id" />
+          <ScalarProperty Name="track_title" ColumnName="track_title" />
+          <ScalarProperty Name="duration" ColumnName="duration" />
+          <ScalarProperty Name="album_position" ColumnName="album_position" />
+          <ScalarProperty Name="composer" ColumnName="composer" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="disc_number" ColumnName="disc_number" />
+          <ScalarProperty Name="genre" ColumnName="genre" />
+          <ScalarProperty Name="lyricist" ColumnName="lyricist" />
+          <ScalarProperty Name="bpm" ColumnName="bpm" />
+          <ScalarProperty Name="filepath" ColumnName="filepath" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

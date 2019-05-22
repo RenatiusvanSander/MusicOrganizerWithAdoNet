@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("models/services/musicdbmodel.context.tt")]
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("models/services/musicdbmodel.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("models/services/model1.context.tt")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("models/services/model1.tt")]
 
 

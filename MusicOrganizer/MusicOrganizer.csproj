@@ -77,6 +77,41 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\LogicModels\DatabaseHandler.cs" />
+    <Compile Include="Models\Services\albums.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services\artists.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services\Model1.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services\Model1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services\Model1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Model1.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Services\tracks.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\AlbumViewModel.cs" />
+    <Compile Include="ViewModels\DeleteAlbumViewModel.cs" />
+    <Compile Include="ViewModels\INorifyDataError.cs" />
+    <Compile Include="ViewModels\InsertAlbumViewModel.cs" />
+    <Compile Include="ViewModels\InsertArtistViewModel.cs" />
+    <Compile Include="ViewModels\InsertTrackViewModel.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\UpdateAlbumViewModel.cs" />
+    <Compile Include="ViewModels\UpdateArtistViewModel.cs" />
+    <Compile Include="ViewModels\UpdateTrackViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AlbumView.xaml.cs">
       <DependentUpon>AlbumView.xaml</DependentUpon>
@@ -127,30 +162,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Services\albums.cs">
-      <DependentUpon>MusicDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Services\artists.cs">
-      <DependentUpon>MusicDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Services\MusicDBModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MusicDBModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Services\MusicDBModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MusicDBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Services\MusicDBModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MusicDBModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Services\tracks.cs">
-      <DependentUpon>MusicDBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Views\InsertAlbumView.xaml.cs">
       <DependentUpon>InsertAlbumView.xaml</DependentUpon>
     </Compile>
@@ -189,12 +200,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EntityDeploy Include="Models\Services\MusicDBModel.edmx">
+    <EntityDeploy Include="Models\Services\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MusicDBModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Models\Services\MusicDBModel.edmx.diagram">
-      <DependentUpon>MusicDBModel.edmx</DependentUpon>
+    <None Include="Models\Services\Model1.edmx.diagram">
+      <DependentUpon>Model1.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -209,22 +220,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\DataModels\" />
-    <Folder Include="Models\LogicModels\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Models\Services\MusicDBModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MusicDBModel.Context.cs</LastGenOutput>
-      <DependentUpon>MusicDBModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\Services\MusicDBModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MusicDBModel.edmx</DependentUpon>
-      <LastGenOutput>MusicDBModel.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\Services\Model1.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\Services\Model1.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Model1.edmx</DependentUpon>
+      <LastGenOutput>Model1.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

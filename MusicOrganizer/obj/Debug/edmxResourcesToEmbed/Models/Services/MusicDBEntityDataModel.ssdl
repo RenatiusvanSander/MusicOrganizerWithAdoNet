@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MusicDBEntityDataService.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.5" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="albums">
+    <Key>
+      <PropertyRef Name="album_id" />
+    </Key>
+    <Property Name="album_id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="artist_id" Type="ubigint" Nullable="false" />
+    <Property Name="Picture" Type="text" Nullable="false" />
+    <Property Name="TrackCount" Type="varchar" MaxLength="4" Nullable="false" />
+    <Property Name="track_id" Type="ubigint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="artists">
+    <Key>
+      <PropertyRef Name="artist_id" />
+    </Key>
+    <Property Name="artist_id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="History" Type="text" Nullable="false" />
+    <Property Name="Picture" Type="text" Nullable="false" />
+    <Property Name="Website" Type="text" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tracks">
+    <Key>
+      <PropertyRef Name="track_id" />
+    </Key>
+    <Property Name="track_id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="album_id" Type="ubigint" Nullable="false" />
+    <Property Name="artist_id" Type="ubigint" Nullable="false" />
+    <Property Name="track_title" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="duration" Type="time" Precision="0" Nullable="false" />
+    <Property Name="album_position" Type="int" Nullable="false" />
+    <Property Name="composer" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="description" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="disc_number" Type="int" Nullable="false" />
+    <Property Name="genre" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="lyricist" Type="varchar" MaxLength="255" Nullable="false" />
+    <Property Name="bpm" Type="int" Nullable="false" />
+    <Property Name="filepath" Type="text" Nullable="false" />
+  </EntityType>
+  <Association Name="albums_ibfk_1">
+    <End Role="artists" Type="Self.artists" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="albums" Type="Self.albums" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="artists">
+        <PropertyRef Name="artist_id" />
+      </Principal>
+      <Dependent Role="albums">
+        <PropertyRef Name="artist_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tracks_ibfk_1">
+    <End Role="albums" Type="Self.albums" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="albums">
+        <PropertyRef Name="album_id" />
+      </Principal>
+      <Dependent Role="tracks">
+        <PropertyRef Name="album_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="tracks_ibfk_2">
+    <End Role="artists" Type="Self.artists" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="artists">
+        <PropertyRef Name="artist_id" />
+      </Principal>
+      <Dependent Role="tracks">
+        <PropertyRef Name="artist_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MusicDBEntityDataServiceStoreContainer">
+    <EntitySet Name="albums" EntityType="Self.albums" Schema="musicdb" store:Type="Tables" />
+    <EntitySet Name="artists" EntityType="Self.artists" Schema="musicdb" store:Type="Tables" />
+    <EntitySet Name="tracks" EntityType="Self.tracks" Schema="musicdb" store:Type="Tables" />
+    <AssociationSet Name="albums_ibfk_1" Association="Self.albums_ibfk_1">
+      <End Role="artists" EntitySet="artists" />
+      <End Role="albums" EntitySet="albums" />
+    </AssociationSet>
+    <AssociationSet Name="tracks_ibfk_1" Association="Self.tracks_ibfk_1">
+      <End Role="albums" EntitySet="albums" />
+      <End Role="tracks" EntitySet="tracks" />
+    </AssociationSet>
+    <AssociationSet Name="tracks_ibfk_2" Association="Self.tracks_ibfk_2">
+      <End Role="artists" EntitySet="artists" />
+      <End Role="tracks" EntitySet="tracks" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

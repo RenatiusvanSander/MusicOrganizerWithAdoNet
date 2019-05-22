@@ -14,13 +14,8 @@ namespace MusicOrganizer.Models.Services
     
     public partial class tracks
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public tracks()
-        {
-            this.albums = new HashSet<albums>();
-        }
-    
         public decimal track_id { get; set; }
+        public decimal album_id { get; set; }
         public decimal artist_id { get; set; }
         public string track_title { get; set; }
         public System.TimeSpan duration { get; set; }
@@ -31,9 +26,9 @@ namespace MusicOrganizer.Models.Services
         public string genre { get; set; }
         public string lyricist { get; set; }
         public int bpm { get; set; }
+        public string filepath { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<albums> albums { get; set; }
+        public virtual albums albums { get; set; }
         public virtual artists artists { get; set; }
     }
 }

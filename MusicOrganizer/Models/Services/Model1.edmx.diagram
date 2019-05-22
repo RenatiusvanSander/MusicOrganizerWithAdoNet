@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="8aa7012b9dbc438892c48f5124b6a03c" Name="Diagram1">
-        <EntityTypeShape EntityType="musicdbModel.albums" Width="1.5" PointX="5.25" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="musicdbModel.artists" Width="1.5" PointX="0.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="musicdbModel.tracks" Width="1.5" PointX="3" PointY="6.125" IsExpanded="true" />
+      <Diagram DiagramId="009dbdfe17864d4682d251e004a9fac1" Name="Diagram1">
+        <EntityTypeShape EntityType="musicdbModel.albums" Width="1.5" PointX="3" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="musicdbModel.artists" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="musicdbModel.tracks" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
         <AssociationConnector Association="musicdbModel.albums_ibfk_1" ManuallyRouted="false" />
-        <AssociationConnector Association="musicdbModel.albums_ibfk_2" ManuallyRouted="false" />
         <AssociationConnector Association="musicdbModel.tracks_ibfk_1" ManuallyRouted="false" />
+        <AssociationConnector Association="musicdbModel.tracks_ibfk_2" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

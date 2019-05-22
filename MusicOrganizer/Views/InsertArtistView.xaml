@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
-        Title="InsertArtistView" Height="450" Width="800">
+        Title="Insert Artist" Height="450" Width="800">
     <Grid>
-        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,22,0,0" TextWrapping="Wrap" Text="{Binding ArtistName}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="71" Margin="63,82,0,0" TextWrapping="NoWrap" Text="{Binding ArtistHistory}" VerticalAlignment="Top" Width="460"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,189,0,0" TextWrapping="NoWrap" Text="{Binding ArtistPicture}" VerticalAlignment="Top" Width="460"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,249,0,0" TextWrapping="NoWrap" Text="{Binding ArtistWebsite}" VerticalAlignment="Top" Width="120"/>
+        <Button Name="AddArtistButton" Content="Add artist" HorizontalAlignment="Left" Height="33" Margin="63,303,0,0" VerticalAlignment="Top" Width="172" IsEnabled="{Binding CanInsertArtistIntoDB}" Click="InsertArtistIntoDB_Click"/>
+
     </Grid>
 </Window>

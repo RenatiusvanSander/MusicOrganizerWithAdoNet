@@ -10,11 +10,10 @@
             <PropertyRef Name="album_id" />
           </Key>
           <Property Name="album_id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="artist_id" Type="ubigint" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="Picture" Type="text" Nullable="false" />
           <Property Name="TrackCount" Type="varchar" MaxLength="4" Nullable="false" />
-          <Property Name="track_id" Type="ubigint" Nullable="false" />
         </EntityType>
         <EntityType Name="artists">
           <Key>
@@ -31,6 +30,7 @@
             <PropertyRef Name="track_id" />
           </Key>
           <Property Name="track_id" Type="ubigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="album_id" Type="ubigint" Nullable="false" />
           <Property Name="artist_id" Type="ubigint" Nullable="false" />
           <Property Name="track_title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="duration" Type="time" Precision="0" Nullable="false" />
@@ -41,22 +41,9 @@
           <Property Name="genre" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="lyricist" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="bpm" Type="int" Nullable="false" />
+          <Property Name="filepath" Type="text" Nullable="false" />
         </EntityType>
         <Association Name="albums_ibfk_1">
-          <End Role="tracks" Type="Self.tracks" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="albums" Type="Self.albums" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tracks">
-              <PropertyRef Name="track_id" />
-            </Principal>
-            <Dependent Role="albums">
-              <PropertyRef Name="track_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="albums_ibfk_2">
           <End Role="artists" Type="Self.artists" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -71,6 +58,20 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="tracks_ibfk_1">
+          <End Role="albums" Type="Self.albums" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="albums">
+              <PropertyRef Name="album_id" />
+            </Principal>
+            <Dependent Role="tracks">
+              <PropertyRef Name="album_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tracks_ibfk_2">
           <End Role="artists" Type="Self.artists" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -89,14 +90,14 @@
           <EntitySet Name="artists" EntityType="Self.artists" Schema="musicdb" store:Type="Tables" />
           <EntitySet Name="tracks" EntityType="Self.tracks" Schema="musicdb" store:Type="Tables" />
           <AssociationSet Name="albums_ibfk_1" Association="Self.albums_ibfk_1">
-            <End Role="tracks" EntitySet="tracks" />
-            <End Role="albums" EntitySet="albums" />
-          </AssociationSet>
-          <AssociationSet Name="albums_ibfk_2" Association="Self.albums_ibfk_2">
             <End Role="artists" EntitySet="artists" />
             <End Role="albums" EntitySet="albums" />
           </AssociationSet>
           <AssociationSet Name="tracks_ibfk_1" Association="Self.tracks_ibfk_1">
+            <End Role="albums" EntitySet="albums" />
+            <End Role="tracks" EntitySet="tracks" />
+          </AssociationSet>
+          <AssociationSet Name="tracks_ibfk_2" Association="Self.tracks_ibfk_2">
             <End Role="artists" EntitySet="artists" />
             <End Role="tracks" EntitySet="tracks" />
           </AssociationSet>
@@ -111,13 +112,12 @@
             <PropertyRef Name="album_id" />
           </Key>
           <Property Name="album_id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="artist_id" Type="Decimal" Nullable="false" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Picture" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TrackCount" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="track_id" Type="Decimal" Nullable="false" />
-          <NavigationProperty Name="tracks" Relationship="Self.albums_ibfk_1" FromRole="albums" ToRole="tracks" />
-          <NavigationProperty Name="artists" Relationship="Self.albums_ibfk_2" FromRole="albums" ToRole="artists" />
+          <NavigationProperty Name="artists" Relationship="Self.albums_ibfk_1" FromRole="albums" ToRole="artists" />
+          <NavigationProperty Name="tracks" Relationship="Self.tracks_ibfk_1" FromRole="albums" ToRole="tracks" />
         </EntityType>
         <EntityType Name="artists">
           <Key>
@@ -128,14 +128,15 @@
           <Property Name="History" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Picture" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Website" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="albums" Relationship="Self.albums_ibfk_2" FromRole="artists" ToRole="albums" />
-          <NavigationProperty Name="tracks" Relationship="Self.tracks_ibfk_1" FromRole="artists" ToRole="tracks" />
+          <NavigationProperty Name="albums" Relationship="Self.albums_ibfk_1" FromRole="artists" ToRole="albums" />
+          <NavigationProperty Name="tracks" Relationship="Self.tracks_ibfk_2" FromRole="artists" ToRole="tracks" />
         </EntityType>
         <EntityType Name="tracks">
           <Key>
             <PropertyRef Name="track_id" />
           </Key>
           <Property Name="track_id" Type="Decimal" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="album_id" Type="Decimal" Nullable="false" />
           <Property Name="artist_id" Type="Decimal" Nullable="false" />
           <Property Name="track_title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="duration" Type="Time" Nullable="false" />
@@ -146,24 +147,11 @@
           <Property Name="genre" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="lyricist" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="bpm" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="albums" Relationship="Self.albums_ibfk_1" FromRole="tracks" ToRole="albums" />
-          <NavigationProperty Name="artists" Relationship="Self.tracks_ibfk_1" FromRole="tracks" ToRole="artists" />
+          <Property Name="filepath" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="albums" Relationship="Self.tracks_ibfk_1" FromRole="tracks" ToRole="albums" />
+          <NavigationProperty Name="artists" Relationship="Self.tracks_ibfk_2" FromRole="tracks" ToRole="artists" />
         </EntityType>
         <Association Name="albums_ibfk_1">
-          <End Role="tracks" Type="Self.tracks" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="albums" Type="Self.albums" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="tracks">
-              <PropertyRef Name="track_id" />
-            </Principal>
-            <Dependent Role="albums">
-              <PropertyRef Name="track_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="albums_ibfk_2">
           <End Role="artists" Type="Self.artists" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -178,6 +166,20 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="tracks_ibfk_1">
+          <End Role="albums" Type="Self.albums" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tracks" Type="Self.tracks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="albums">
+              <PropertyRef Name="album_id" />
+            </Principal>
+            <Dependent Role="tracks">
+              <PropertyRef Name="album_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="tracks_ibfk_2">
           <End Role="artists" Type="Self.artists" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
@@ -191,19 +193,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="musicdbEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="MusicDBEntityDataModel" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="albums" EntityType="Self.albums" />
           <EntitySet Name="artists" EntityType="Self.artists" />
           <EntitySet Name="tracks" EntityType="Self.tracks" />
           <AssociationSet Name="albums_ibfk_1" Association="Self.albums_ibfk_1">
-            <End Role="tracks" EntitySet="tracks" />
-            <End Role="albums" EntitySet="albums" />
-          </AssociationSet>
-          <AssociationSet Name="albums_ibfk_2" Association="Self.albums_ibfk_2">
             <End Role="artists" EntitySet="artists" />
             <End Role="albums" EntitySet="albums" />
           </AssociationSet>
           <AssociationSet Name="tracks_ibfk_1" Association="Self.tracks_ibfk_1">
+            <End Role="albums" EntitySet="albums" />
+            <End Role="tracks" EntitySet="tracks" />
+          </AssociationSet>
+          <AssociationSet Name="tracks_ibfk_2" Association="Self.tracks_ibfk_2">
             <End Role="artists" EntitySet="artists" />
             <End Role="tracks" EntitySet="tracks" />
           </AssociationSet>
@@ -213,16 +215,15 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="musicdbModelStoreContainer" CdmEntityContainer="musicdbEntities">
+        <EntityContainerMapping StorageEntityContainer="musicdbModelStoreContainer" CdmEntityContainer="MusicDBEntityDataModel">
           <EntitySetMapping Name="albums">
             <EntityTypeMapping TypeName="musicdbModel.albums">
               <MappingFragment StoreEntitySet="albums">
                 <ScalarProperty Name="album_id" ColumnName="album_id" />
-                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="artist_id" ColumnName="artist_id" />
+                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="Picture" ColumnName="Picture" />
                 <ScalarProperty Name="TrackCount" ColumnName="TrackCount" />
-                <ScalarProperty Name="track_id" ColumnName="track_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -241,6 +242,7 @@
             <EntityTypeMapping TypeName="musicdbModel.tracks">
               <MappingFragment StoreEntitySet="tracks">
                 <ScalarProperty Name="track_id" ColumnName="track_id" />
+                <ScalarProperty Name="album_id" ColumnName="album_id" />
                 <ScalarProperty Name="artist_id" ColumnName="artist_id" />
                 <ScalarProperty Name="track_title" ColumnName="track_title" />
                 <ScalarProperty Name="duration" ColumnName="duration" />
@@ -251,6 +253,7 @@
                 <ScalarProperty Name="genre" ColumnName="genre" />
                 <ScalarProperty Name="lyricist" ColumnName="lyricist" />
                 <ScalarProperty Name="bpm" ColumnName="bpm" />
+                <ScalarProperty Name="filepath" ColumnName="filepath" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

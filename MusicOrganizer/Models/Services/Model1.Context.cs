@@ -13,10 +13,10 @@ namespace MusicOrganizer.Models.Services
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class musicdbEntities : DbContext
+    public partial class MusicDBEntityDataModel : DbContext
     {
-        public musicdbEntities()
-            : base("name=musicdbEntities")
+        public MusicDBEntityDataModel()
+            : base("name=MusicDBEntityDataModel")
         {
         }
     
