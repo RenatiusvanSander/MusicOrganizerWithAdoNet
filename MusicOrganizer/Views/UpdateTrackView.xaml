@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
-        Title="UpdateTrackView" Height="450" Width="800">
+        Title="Update Track" Height="450" Width="800">
     <Grid>
-        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,18,0,0" TextWrapping="NoWrap" Text="{Binding UpdateTitle}" VerticalAlignment="Top" Width="120"/>
+        <ComboBox HorizontalAlignment="Left" Height="23" Margin="63,58,0,0" VerticalAlignment="Top" Width="218" ItemsSource="{Binding UpdateAlbum}" SelectedItem="{Binding UpdateSelectedAlbum}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,100,0,0" TextWrapping="NoWrap" Text="{Binding UpdateDuration}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,144,0,0" TextWrapping="NoWrap" Text="{Binding UpdateAlbumPosition}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,185,0,0" TextWrapping="NoWrap" Text="{Binding UpdateComposer}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,229,0,0" TextWrapping="NoWrap" Text="{Binding UpdateDescription}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,373,0,0" TextWrapping="NoWrap" Text="{Binding UpdateDiscNumber}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,274,0,0" TextWrapping="NoWrap" Text="{Binding UpdateGenre}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,325,0,0" TextWrapping="NoWrap" Text="{Binding UpdateLyricist}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="222,229,0,0" TextWrapping="NoWrap" Text="{Binding UpdateFilepath}" VerticalAlignment="Top" Width="430"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="222,185,0,0" TextWrapping="NoWrap" Text="{Binding UpdateBPM}" VerticalAlignment="Top" Width="430"/>
+        <Button Name="updateTrackButton" Content="Update Track" HorizontalAlignment="Left" Margin="222,372,0,0" VerticalAlignment="Top" Width="134" Height="24" IsEnabled="{Binding CanUpdateTrack}" Click="UpdateTrackButton_Click"/>
+        <ComboBox HorizontalAlignment="Left" Margin="222,139,0,0" VerticalAlignment="Top" Width="248" Height="28" ItemsSource="{Binding UpdateArtist}" SelectedItem="{Binding UpdateSelectedArtist}"/>
+        <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="28" Margin="475,139,0,0" VerticalAlignment="Top" Width="117" Click="AddArtistButton_Click"/>
+        <Button Name ="addAlbumButton" Content="Add Album" HorizontalAlignment="Left" Margin="290,54,0,0" VerticalAlignment="Top" Width="150" Height="29" RenderTransformOrigin="0.5,0.5" Click="AddAlbumButton_Click">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.587"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+
     </Grid>
 </Window>

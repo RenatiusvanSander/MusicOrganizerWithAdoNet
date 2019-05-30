@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="UpdateAlbumView" Height="450" Width="800">
     <Grid>
-        
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,26,0,0" TextWrapping="Wrap" Text="{Binding UpdateTitle}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,87,0,0" TextWrapping="Wrap" Text="{Binding UpdatePicture}" VerticalAlignment="Top" Width="352"/>
+        <Button Name="UpdateAlbumButton" Content="Update Album" HorizontalAlignment="Left" Height="51" Margin="50,271,0,0" VerticalAlignment="Top" Width="218" Click="UpdateAlbumButton_Click" IsEnabled="{Binding CanAddAlbum}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,202,0,0" TextWrapping="NoWrap" Text="{Binding AlbumArtist}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,144,0,0" TextWrapping="Wrap" Text="{Binding UpdateCountTracks}" VerticalAlignment="Top" Width="352"/>
     </Grid>
 </Window>

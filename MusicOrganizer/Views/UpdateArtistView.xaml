@@ -7,6 +7,15 @@
         mc:Ignorable="d"
         Title="UpdateArtistView" Height="450" Width="800">
     <Grid>
-        
+        <Label Content="Artist's name" HorizontalAlignment="Left" Margin="56,26,0,0" VerticalAlignment="Top"/>
+        <Label Content="Artist's history" HorizontalAlignment="Left" Margin="56,72,0,0" VerticalAlignment="Top"/>
+        <Label Content="Artist's pictue" HorizontalAlignment="Left" Margin="56,192,0,0" VerticalAlignment="Top"/>
+        <Label Content="Artist's website" HorizontalAlignment="Left" Margin="56,234,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="184,26,0,0" TextWrapping="NoWrap" Text="{Binding UpdateName}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="105" Margin="184,72,0,0" TextWrapping="Wrap" Text="{Binding UpdateHistory}" VerticalAlignment="Top" Width="433"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="184,192,0,0" TextWrapping="NoWrap" Text="{Binding UpdatePicture}" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.483,3.417"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="184,234,0,0" TextWrapping="NoWrap" Text="{Binding UpdateWebsite}" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Update Artist" HorizontalAlignment="Left" Height="39" Margin="56,282,0,0" VerticalAlignment="Top" Width="170" IsEnabled="{Binding CanUpdateArtist}" Click="UpdateArtistButton_Click"/>
+
     </Grid>
 </Window>

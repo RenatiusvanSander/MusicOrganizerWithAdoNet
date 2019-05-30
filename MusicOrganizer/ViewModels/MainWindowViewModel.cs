@@ -2,6 +2,7 @@
 using MusicOrganizer.Models.Services;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 
 namespace MusicOrganizer.ViewModels
 {
@@ -13,30 +14,69 @@ namespace MusicOrganizer.ViewModels
     {
 
         /// <summary>
-        /// 
+        /// Ctor.
         /// </summary>
         public MainWindowViewModel()
         {
-            Albums = DatabaseHandler.ReadAlbums();
+            LoadAlbumFromDB();
+            DatabaseHandler.DatabaseUpdated += UpdateDataGrid;
         }
 
-        private List<albums> albums;
+        private List<albums> albumToDataGrid;
+
+        // Contains all albums to present them on DataGrid of MainWindow.
+        public List<albums> AlbumToDataGrid
+        {
+            get
+            {
+                return albumToDataGrid;
+            }
+            set
+            {
+                if (albumToDataGrid != value)
+                {
+                    albumToDataGrid = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates datagrid on MainWindow when database is updated.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">e</param>
+        private void UpdateDataGrid(object sender, EventArgs e)
+        {
+            LoadAlbumFromDB();
+        }
+
+        /// <summary>
+        /// Loads all albums from database.
+        /// </summary>
+        private void LoadAlbumFromDB()
+        {
+            AlbumToDataGrid = DatabaseHandler.ReadAlbums();
+        }
 
         /// <summary>
         /// 
         /// </summary>
-        public List<albums> Albums {
-            get
+        /// <param name="currentItem"></param>
+        public void DeleteAlbum(albums currentItem)
+        {
+
+            // Tries to delete an album with tracks.
+            try
             {
-                return albums;
+                DatabaseHandler.DeleteAlbumAndTracks(currentItem);
+
+                MessageBox.Show($"Album {currentItem.title} has been" +
+                    $" successful deleted.");
             }
-            private set
+            catch(Exception e)
             {
-                if(albums != value)
-                {
-                    albums = value;
-                    OnPropertyChanged();
-                }
+                ViewModelsErrorHandler(e);
             }
         }
     }
