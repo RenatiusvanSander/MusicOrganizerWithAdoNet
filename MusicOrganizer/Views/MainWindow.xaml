@@ -16,15 +16,17 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <DataGrid
-            x:Name="albumDataGrid"
+            x:Name="AlbumDataGrid"
             Grid.Column="1"
             AutoGenerateColumns="False"
             ColumnWidth="*"
-            x:FieldModifier="public">
+            x:FieldModifier="public"
+            ItemsSource="{Binding AlbumToDataGrid, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged}"
+            MouseDoubleClick="AlbumDataGrid_Click">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="AlbumName" Binding="{Binding Albums.title}"/>
-                <DataGridTextColumn Header="Artist" Binding="{Binding Albums.title}"/>
-                <DataGridTextColumn Header="Tracks" Binding="{Binding Albums.TrackCount}"/>
+                <DataGridTextColumn Header="Title" Binding="{Binding title}"/>
+                <DataGridTextColumn Header="Artist" Binding="{Binding artists.Name}"/>
+                <DataGridTextColumn Header="Tracks" Binding="{Binding TrackCount}"/>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.HeaderTemplate>
                         <DataTemplate>
@@ -33,7 +35,7 @@
                     </DataGridTemplateColumn.HeaderTemplate>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Albums.Picture}"/>
+                            <Image Source="{Binding Picture}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -46,9 +48,9 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button x:Name="insertButton" Content="Insert" />
-                                <Button x:Name="updateButton" Content="Update" />
-                                <Button x:Name="deleteButton" Content="Delete" />
+                                <Button x:Name="InsertAlbumButton" Content="Insert" Click="InsertAlbumButton_Click"/>
+                                <Button x:Name="UpdateAlbumButton" Content="Update" Click="UpdateAlbumButton_Click"/>
+                                <Button x:Name="DeleteAlbumButton" Content="Delete" Click="DeleteAlbumButton_Click"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -57,6 +59,7 @@
         </DataGrid>
         <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="44" Margin="60,62,0,0" VerticalAlignment="Top" Width="132" Click="ShowInseretArtistView_Click"/>
         <Button Name="addAlbumButton" Content="Add Album" HorizontalAlignment="Left" Margin="60,122,0,0" VerticalAlignment="Top" Width="132" Height="37" Click="ShowInsertAlbumView_Click"/>
+        <Button Name="addTrackButton" Content="Add Track" HorizontalAlignment="Left" Height="36" Margin="60,174,0,0" VerticalAlignment="Top" Width="132" Click="AddTrackButton_Click"/>
     </Grid>
 
 </Window>

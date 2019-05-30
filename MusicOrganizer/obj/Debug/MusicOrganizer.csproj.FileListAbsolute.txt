@@ -39,3 +39,5 @@ C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrgani
 C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\obj\Debug\Views\UpdateAlbumView.baml
 C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\obj\Debug\Views\UpdateArtistView.baml
 C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\obj\Debug\Views\UpdateTrackView.baml
+C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\obj\Debug\Views\ShowAlbumTrackListView.g.cs
+C:\Users\Worker\Documents\Visual Studio 2017\Projects\MusicOrganizer\MusicOrganizer\obj\Debug\Views\ShowAlbumTrackListView.baml

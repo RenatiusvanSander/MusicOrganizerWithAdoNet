@@ -108,6 +108,7 @@
     <Compile Include="ViewModels\InsertArtistViewModel.cs" />
     <Compile Include="ViewModels\InsertTrackViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\ShowAlbumTrackListViewModel.cs" />
     <Compile Include="ViewModels\UpdateAlbumViewModel.cs" />
     <Compile Include="ViewModels\UpdateArtistViewModel.cs" />
     <Compile Include="ViewModels\UpdateTrackViewModel.cs" />
@@ -123,6 +124,9 @@
     </Compile>
     <Compile Include="Views\InsertTrackView.xaml.cs">
       <DependentUpon>InsertTrackView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ShowAlbumTrackListView.xaml.cs">
+      <DependentUpon>ShowAlbumTrackListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UpdateAlbumView.xaml.cs">
       <DependentUpon>UpdateAlbumView.xaml</DependentUpon>
@@ -168,6 +172,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ShowAlbumTrackListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UpdateAlbumView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -1,0 +1,41 @@
+﻿<Window x:Class="MusicOrganizer.Views.ShowAlbumTrackListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MusicOrganizer.Views"
+        mc:Ignorable="d"
+        Title="Shows Album" Height="768" Width="1024">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Column="0" Width="160" Height="160" Source="{Binding AlbumPicture}" Margin="5,27,4.6,551.4"/>
+        <DataGrid Name="AlbumTrackListDataGrid" Grid.Column="1" AutoGenerateColumns="False" ItemsSource="{Binding DataGridItemsSource}" MouseDoubleClick="AlbumDataGrid_Click">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Title" Binding="{Binding track_title}" Width="*"/>
+                <DataGridTextColumn Header="Duration" Binding="{Binding duration}" Width="*"/>
+                <DataGridTextColumn Header="Artist" Binding="{Binding artists.Name}" Width="*"/>
+                <DataGridTextColumn Header="Album" Binding="{Binding albums.title}" Width="*"/>
+                <DataGridTextColumn Header="Genre" Binding="{Binding genre}" Width="*"/>
+                <DataGridTemplateColumn  Width="*">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Play" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button x:Name="playButton" Click="PlayButton_Click">
+                                Play
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Picture of Album" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="0.509,2.031"/>
+
+    </Grid>
+</Window>

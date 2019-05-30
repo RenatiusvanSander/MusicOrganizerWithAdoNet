@@ -1,7 +1,6 @@
 ﻿using MusicOrganizer.Models.Services;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace MusicOrganizer.Models.LogicModels
@@ -14,6 +13,7 @@ namespace MusicOrganizer.Models.LogicModels
     public class DatabaseHandler
     {
 
+        // Connects programs via OR-Mapper to MySQL database.
         private static MusicDBEntityDataModel musicDBModel;
 
         /// <summary>
@@ -46,6 +46,51 @@ namespace MusicOrganizer.Models.LogicModels
         }
 
         /// <summary>
+        /// Reads all tracks of an album and returns them as a list.
+        /// </summary>
+        /// <param name="album_id">decimal</param>
+        /// <returns></returns>
+        public static List<tracks> ReadAlbumTracks(decimal album_id)
+        {
+            List<tracks> albumTrackList = new List<tracks>();
+
+            // Tries to read all tracks of album and fills albumTrackList.
+            try
+            {
+                albumTrackList = musicDBModel.tracks
+                    .Where(albumTracks => albumTracks.album_id == album_id)
+                    .ToList();
+            }
+            catch(Exception e)
+            {
+                ThrowException(e);
+            }
+
+            return albumTrackList;
+        }
+
+        /// <summary>
+        /// Deletes an album from database.
+        /// </summary>
+        /// <param name="currentItem"></param>
+        public static void DeleteAlbumAndTracks(albums currentItem)
+        {
+
+            // Tries to delete tracks and album from database.
+            try
+            {
+                musicDBModel.tracks.RemoveRange(currentItem.tracks);
+                musicDBModel.albums.Remove(currentItem);
+
+                musicDBModel.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                ThrowException(e);
+            }
+        }
+
+        /// <summary>
         /// Adds artist into database or throws exception if this is
         /// unsuccessful.
         /// </summary>
@@ -64,6 +109,9 @@ namespace MusicOrganizer.Models.LogicModels
             }
 
             musicDBModel.SaveChanges();
+
+            // Activates event DatabaseUpdated.
+            OnDatabaseUpdated(new EventArgs());
         }
 
         /// <summary>
@@ -99,7 +147,46 @@ namespace MusicOrganizer.Models.LogicModels
         }
 
         /// <summary>
-        /// 
+        /// Updates an artist inside database.
+        /// </summary>
+        /// <param name="artist_id">decimal</param>
+        /// <param name="name">string</param>
+        /// <param name="history">string</param>
+        /// <param name="picture">string</param>
+        /// <param name="website">string</param>
+        public static void UpdateArtist(decimal artist_id,
+            string name,
+            string history,
+            string picture,
+            string website)
+        {
+
+            // Tries to update artist into database.
+            try
+            {
+
+                // Gets artist by artist_id.
+                var artist = musicDBModel.artists
+                    .Where(entry => entry.artist_id == artist_id)
+                    .Single();
+
+                // Updates values ogf an artist.
+                artist.History = history;
+                artist.Name = name;
+                artist.Picture = picture;
+                artist.Website = website;
+
+                // Saves changes into database.
+                musicDBModel.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                ThrowException(e);
+            }
+        }
+
+        /// <summary>
+        /// Adds an album into Database.
         /// </summary>
         /// <param name="albumArtist">string</param>
         /// <param name="albumTitle">string</param>
@@ -110,26 +197,87 @@ namespace MusicOrganizer.Models.LogicModels
             string albumPicture,
             string albumCountTracks)
         {
-            artists artist;
-            albums newAlbum;
 
-            // Try to get artist and store new album into database.
+            // Tries to get artist and store new album into database.
             try
             {
-                artist = musicDBModel.artists.
+
+                // Gets artist.
+                var artist = musicDBModel.artists.
                                 Where(a => a.Name == albumArtist)
                                 .SingleOrDefault();
 
-                newAlbum = new albums()
+                var newAlbum = new albums()
                 {
                     artists = artist,
                     Picture = albumPicture,
                     title = albumTitle,
                     TrackCount = albumCountTracks
                 };
-                musicDBModel.albums.Add(newAlbum);
 
+                // Adds and saves changes to database.
+                musicDBModel.albums.Add(newAlbum);
                 musicDBModel.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                ThrowException(e);
+            }
+
+            // Activates event DatabaseUpdated.
+            OnDatabaseUpdated(new EventArgs());
+        }
+
+        /// <summary>
+        /// Reads and returns all artists from database.
+        /// </summary>
+        /// <returns>List<albums></returns>
+        public static List<artists> ReadArtists()
+        {
+            List<artists> artistsList = new List<artists>();
+
+            /* Try to get a list of artists from database */
+            try
+            {
+                artistsList = musicDBModel.artists.ToList();
+            }
+            catch (Exception e)
+            {
+                ThrowException(e);
+            }
+
+            return artistsList;
+        }
+
+        /// <summary>
+        /// Updates album entry in database.
+        /// </summary>
+        /// <param name="updateTitle"></param>
+        /// <param name="updatePicture"></param>
+        /// <param name="updateCountTracks"></param>
+        public static void UpdateAlbum(decimal id,
+            string updateTitle,
+            string updatePicture,
+            string updateCountTracks)
+        {
+
+            // Tries update a specific row of album.
+            try
+            {
+
+                // Queries albums row via id.
+                albums album = musicDBModel.albums
+                    .Where(a => a.album_id == id)
+                    .Single();
+
+                // Updates values of row.
+                album.title = updateTitle;
+                album.Picture = updatePicture;
+                album.TrackCount = updateCountTracks;
+
+                // Saves and updates Views
+                musicDBModel.SaveChanges();
+                OnDatabaseUpdated(new EventArgs());
             }
             catch (Exception e)
             {
@@ -137,10 +285,160 @@ namespace MusicOrganizer.Models.LogicModels
             }
         }
 
-        // Refactor to use for every where and different queries.
-        private static DbSet GetDbSetObject()
+        #region eventhandler databaseupdated
+        public static event EventHandler DatabaseUpdated;
+
+        /// <summary>
+        /// Database update raises DatabaseUpdated.
+        /// </summary>
+        protected static void OnDatabaseUpdated(EventArgs e)
         {
-            return null;
+            EventHandler handler = DatabaseUpdated;
+            handler?.Invoke(handler, e);
         }
+
+        /// <summary>
+        /// Adds a track into database.
+        /// </summary>
+        /// <param name="trackSelectedAlbum">string</param>
+        /// <param name="trackSelectedArtist">string</param>
+        /// <param name="trackTitle">stringparam>
+        /// <param name="trackDuration">string</param>
+        /// <param name="trackAlbumPosition">string</param>
+        /// <param name="trackComposer">string</param>
+        /// <param name="trackDescription">string</param>
+        /// <param name="trackDiscNumber">string</param>
+        /// <param name="trackGenre">string</param>
+        /// <param name="trackLyricist">string</param>
+        /// <param name="trackBPM">string</param>
+        /// <param name="trackFilepath">string</param>
+        public static void AddTrack(string trackSelectedAlbum,
+            string trackSelectedArtist,
+            string trackTitle,
+            string trackDuration,
+            string trackAlbumPosition,
+            string trackComposer,
+            string trackDescription,
+            string trackDiscNumber,
+            string trackGenre,
+            string trackLyricist,
+            string trackBPM,
+            string trackFilepath)
+        {
+
+            // Tries to add a track into database or throws an exception.
+            try
+            {
+                // Gets artist.
+                var artist = musicDBModel.artists.
+                                Where(a => a.Name == trackSelectedArtist)
+                                .Single();
+
+                // Gets album.
+                var album = musicDBModel.albums.
+                                Where(a => a.title == trackSelectedAlbum)
+                                .Single();
+
+                tracks track = new tracks()
+                {
+                    album_id = album.album_id,
+                    artist_id = artist.artist_id,
+                    track_title = trackTitle,
+                    duration = TimeSpan.Parse(trackDuration),
+                    album_position = int.Parse(trackAlbumPosition),
+                    composer = trackComposer,
+                    description = trackDescription,
+                    disc_number = int.Parse(trackDiscNumber),
+                    genre = trackGenre,
+                    lyricist = trackLyricist,
+                    bpm = int.Parse(trackBPM),
+                    filepath = trackFilepath
+                };
+                musicDBModel.tracks.Add(track);
+
+                // Saves and updates Views
+                musicDBModel.SaveChanges();
+                OnDatabaseUpdated(new EventArgs());
+            }
+            catch (Exception e)
+            {
+                ThrowException(e);
+            }
+        }
+
+        /// <summary>
+        /// Updates a track in database.
+        /// </summary>
+        /// <param name="updateSelectedAlbum">string</param>
+        /// <param name="updateSelectedArtist">string</param>
+        /// <param name="updateTitle">string</param>
+        /// <param name="updateDuration">string</param>
+        /// <param name="updateAlbumPosition">string</param>
+        /// <param name="updateComposer">string</param>
+        /// <param name="updateDescription">string</param>
+        /// <param name="updateDiscNumber">string</param>
+        /// <param name="updateGenre">string</param>
+        /// <param name="updateLyricist">string</param>
+        /// <param name="updateBPM">string</param>
+        /// <param name="updateFilepath">string</param>
+        public static void UpdateTrack(decimal track_id,
+            string updateSelectedAlbum,
+            string updateSelectedArtist,
+            string updateTitle,
+            string updateDuration,
+            string updateAlbumPosition,
+            string updateComposer,
+            string updateDescription,
+            string updateDiscNumber,
+            string updateGenre,
+            string updateLyricist,
+            string updateBPM,
+            string updateFilepath)
+        {
+
+            // Tries to update track in database.
+            try
+            {
+
+                // Gets track from database to update.
+                var artist = musicDBModel.artists
+                    .Where(t => t.Name == updateSelectedArtist)
+                    .Single();
+
+                // Gets track from database to update.
+                var album = musicDBModel.albums
+                    .Where(t => t.title == updateSelectedAlbum
+                    &&
+                    t.artists.Name == updateSelectedArtist)
+                    .Single();
+
+                // Gets track from database to update.
+                var track = musicDBModel.tracks
+                    .Where(t => t.track_id == track_id)
+                    .Single();
+
+                // Updates values of track.
+                track.track_id = album.album_id;
+                track.album_position = int.Parse(updateAlbumPosition);
+                track.artist_id = artist.artist_id;
+                track.bpm = int.Parse(updateBPM);
+                track.composer = updateComposer;
+                track.description = updateDescription;
+                track.disc_number = int.Parse(updateDiscNumber);
+                track.duration = TimeSpan.Parse(updateDuration);
+                track.filepath = updateFilepath;
+                track.genre = updateGenre;
+                track.lyricist = updateLyricist;
+                track.track_title = updateTitle;
+
+                // Saves changes.
+                musicDBModel.SaveChanges();
+            }
+            catch(Exception e)
+            {
+                ThrowException(e);
+            }
+        }
+        #endregion
     }
 }

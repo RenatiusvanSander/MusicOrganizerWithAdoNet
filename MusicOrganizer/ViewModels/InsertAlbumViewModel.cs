@@ -1,5 +1,7 @@
 ﻿using MusicOrganizer.Models.LogicModels;
+using MusicOrganizer.Models.Services;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 
 namespace MusicOrganizer.ViewModels
@@ -16,14 +18,15 @@ namespace MusicOrganizer.ViewModels
         /// </summary>
         public InsertAlbumViewModel()
         {
-
+            InitializesArtists();
         }
 
         /* private values of public properties */
         private string albumTitle;
         private string albumPicture;
         private string albumCountTracks;
-        private string albumArtist;
+        private List<string> artistsList;
+        private string selectedArtist;
 
         // Stores title of album.
         public string AlbumTitle
@@ -66,19 +69,17 @@ namespace MusicOrganizer.ViewModels
         }
 
         // Stores artist of album.
-        public string AlbumArtist
+        public List<string> Artists
         {
             get
             {
-                return albumArtist;
+                return artistsList;
             }
             set
             {
-                if (string.IsNullOrEmpty(albumArtist)
-                    ||
-                    !albumArtist.Equals(value))
+                if (artistsList == null || artistsList != value)
                 {
-                    albumArtist = value;
+                    artistsList = value;
                     CheckAndAllowAddAlbum();
                     OnPropertyChanged();
                 }
@@ -105,6 +106,24 @@ namespace MusicOrganizer.ViewModels
             }
         }
 
+        // Stores the selected artist from InsertAlbumView.
+        public string SelectedArtist
+        {
+            get
+            {
+                return selectedArtist;
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(selectedArtist) || !selectedArtist.Equals(value))
+                {
+                    selectedArtist = value;
+                    CheckAndAllowAddAlbum();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         // Enables or disables button "Add Album".
         public bool CanAddAlbum { get; private set; }
 
@@ -117,7 +136,7 @@ namespace MusicOrganizer.ViewModels
                 &&
                 !string.IsNullOrEmpty(AlbumPicture)
                 &&
-                !string.IsNullOrEmpty(AlbumArtist)
+                !string.IsNullOrEmpty(SelectedArtist)
                 &&
                 !string.IsNullOrEmpty(AlbumCountTracks))
             {
@@ -133,6 +152,31 @@ namespace MusicOrganizer.ViewModels
         }
 
         /// <summary>
+        /// Initializes Artists property for the combobox.
+        /// </summary>
+        private void InitializesArtists()
+        {
+            List<string> artistsNames = new List<string>();
+
+            // Tries to fill artistsNames. Or throw an error.
+            try
+            {
+                foreach(var artist in DatabaseHandler.ReadArtists().ToArray())
+                {
+                    artistsNames.Add(artist.Name);
+                }
+            }
+            catch(Exception e)
+            {
+                ViewModelsErrorHandler(e);
+            }
+
+            // Copy values.
+            Artists = artistsNames;
+            SelectedArtist = Artists.ToArray()[0];
+        }
+
+        /// <summary>
         /// Inserts album into database or shows an error message box.
         /// </summary>
         public void InsertAlbumIntoDB()
@@ -142,7 +186,7 @@ namespace MusicOrganizer.ViewModels
              * shown in a message box to user. */
             try
             {
-                DatabaseHandler.AddAlbum(AlbumArtist,
+                DatabaseHandler.AddAlbum(SelectedArtist,
                    AlbumTitle,
                    AlbumPicture,
                    AlbumCountTracks);

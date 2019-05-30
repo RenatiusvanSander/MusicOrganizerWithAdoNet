@@ -1,27 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MusicOrganizer.Models.Services;
+using MusicOrganizer.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MusicOrganizer.Views
 {
+
     /// <summary>
     /// Interaktionslogik für UpdateArtistView.xaml
     /// </summary>
     public partial class UpdateArtistView : Window
     {
+
+        /// <summary>
+        /// Ctor
+        /// </summary>
         public UpdateArtistView()
         {
             InitializeComponent();
+            updateArtistViewModel = new UpdateArtistViewModel();
+            DataContext = updateArtistViewModel;
+        }
+
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        public UpdateArtistView(tracks currentTrack)
+        {
+            InitializeComponent();
+            updateArtistViewModel = new UpdateArtistViewModel(currentTrack);
+            DataContext = updateArtistViewModel;
+        }
+
+        private UpdateArtistViewModel updateArtistViewModel;
+
+        /// <summary>
+        /// Updates artist after a click on button.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">sender</param>
+        private void UpdateArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+            updateArtistViewModel.UpdateArtistInDB();
         }
     }
 }

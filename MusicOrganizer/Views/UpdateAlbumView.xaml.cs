@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MusicOrganizer.Models.Services;
+using MusicOrganizer.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MusicOrganizer.Views
 {
@@ -19,9 +9,37 @@ namespace MusicOrganizer.Views
     /// </summary>
     public partial class UpdateAlbumView : Window
     {
+        private UpdateAlbumViewModel updateAlbumViewModel;
+
+        /// <summary>
+        /// Standard Ctor.
+        /// </summary>
         public UpdateAlbumView()
         {
             InitializeComponent();
+            updateAlbumViewModel = new UpdateAlbumViewModel();
+            DataContext = updateAlbumViewModel;
+        }
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
+        /// <param name="rowContent">albums</param>
+        public UpdateAlbumView(albums rowContent)
+        {
+            InitializeComponent();
+            updateAlbumViewModel = new UpdateAlbumViewModel(rowContent);
+            DataContext = updateAlbumViewModel;
+        }
+
+        /// <summary>
+        /// Updastes an album.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">sender</param>
+        private void UpdateAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            updateAlbumViewModel.UpdateAlbumInDB();
         }
     }
 }

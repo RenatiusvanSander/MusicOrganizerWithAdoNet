@@ -1,27 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MusicOrganizer.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MusicOrganizer.Views
 {
+
     /// <summary>
     /// Interaktionslogik für InsertTrackView.xaml
     /// </summary>
     public partial class InsertTrackView : Window
     {
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
         public InsertTrackView()
         {
             InitializeComponent();
+            insertTrackViewModel = new InsertTrackViewModel();
+            DataContext = insertTrackViewModel;
+        }
+
+        private InsertTrackViewModel insertTrackViewModel;
+
+        /// <summary>
+        /// Inserts a tracl into the database.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void AddTrackButton_Click(object sender, RoutedEventArgs e)
+        {
+            insertTrackViewModel.InsertTrackIntoDB();
+        }
+
+        /// <summary>
+        /// Adds arist into database.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void AddArtistButton_Click(object sender, RoutedEventArgs e)
+        {
+            InsertArtistView insertArtistView = new InsertArtistView();
+            insertArtistView.ShowDialog();
+        }
+
+        /// <summary>
+        /// Adds an album to database.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void AddAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            InsertAlbumView insertAlbumView = new InsertAlbumView();
+            insertAlbumView.ShowDialog();
         }
     }
 }
