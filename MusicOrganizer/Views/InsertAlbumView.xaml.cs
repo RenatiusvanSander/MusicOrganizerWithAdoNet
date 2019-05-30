@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MusicOrganizer.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,27 @@ namespace MusicOrganizer.Views
     /// </summary>
     public partial class InsertAlbumView : Window
     {
+
+        /// <summary>
+        /// Ctor.
+        /// </summary>
         public InsertAlbumView()
         {
             InitializeComponent();
+            insertAlbumViewModel = new InsertAlbumViewModel();
+            DataContext = insertAlbumViewModel;
+        }
+
+        private InsertAlbumViewModel insertAlbumViewModel;
+
+        /// <summary>
+        /// Inserts an album to database.
+        /// </summary>
+        /// <param name="sender">objetc</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void AddAlbumButton_Click(object sender, RoutedEventArgs e)
+        {
+            insertAlbumViewModel.InsertAlbumIntoDB();
         }
     }
 }

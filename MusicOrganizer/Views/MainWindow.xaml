@@ -56,6 +56,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="44" Margin="60,62,0,0" VerticalAlignment="Top" Width="132" Click="ShowInseretArtistView_Click"/>
+        <Button Name="addAlbumButton" Content="Add Album" HorizontalAlignment="Left" Margin="60,122,0,0" VerticalAlignment="Top" Width="132" Height="37" Click="ShowInsertAlbumView_Click"/>
     </Grid>
 
 </Window>

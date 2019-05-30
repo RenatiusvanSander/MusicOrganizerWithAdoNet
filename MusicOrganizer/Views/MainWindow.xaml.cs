@@ -22,7 +22,7 @@ namespace MusicOrganizer.Views
         private MainWindowViewModel mainWindowViewModel;
 
         /// <summary>
-        /// 
+        /// Shows InsertArtistView to let user add an artist.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -31,6 +31,18 @@ namespace MusicOrganizer.Views
         {
             InsertArtistView insertArtistView = new InsertArtistView();
             insertArtistView.ShowDialog();
+        }
+
+        /// <summary>
+        /// Shows InsertAlbumView to let user add an artist.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">RoutedEventArgs</param>
+        private void ShowInsertAlbumView_Click(object sender,
+            RoutedEventArgs e)
+        {
+            InsertAlbumView insertAlbumView = new InsertAlbumView();
+            insertAlbumView.ShowDialog();
         }
     }
 }
