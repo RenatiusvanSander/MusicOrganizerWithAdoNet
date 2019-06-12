@@ -9,7 +9,7 @@ namespace MusicOrganizer.ViewModels
     /// <summary>
     /// Presentation logic for InsertArtistView.
     /// </summary>
-    public class InsertArtistViewModel : ViewModelBase
+    public class InsertArtistViewModel : NotifyDataErrorInfo<InsertArtistViewModel>
     {
 
         /// <summary>
@@ -17,7 +17,7 @@ namespace MusicOrganizer.ViewModels
         /// </summary>
         public InsertArtistViewModel()
         {
-
+            InitializesValidationRules();
         }
 
         /* private varies for properties */
@@ -121,20 +121,7 @@ namespace MusicOrganizer.ViewModels
             /* Checks for all strings are not null or empty and sets
              * CanInsertArtistIntoDB to true or false. True activates
              * the button on InsertArtistView. */
-            if (!string.IsNullOrEmpty(ArtistName)
-                &&
-                !string.IsNullOrEmpty(ArtistHistory)
-                &&
-                !string.IsNullOrEmpty(ArtistPicture)
-                &&
-                !string.IsNullOrEmpty(ArtistWebsite))
-            {
-                CanInsertArtistIntoDB = true;
-            }
-            else
-            {
-                CanInsertArtistIntoDB = false;
-            }
+            CanInsertArtistIntoDB = HasErrors == false ? false : true;
 
             // Update property CanInsertArtistIntoDB.
             OnPropertyChanged(nameof(CanInsertArtistIntoDB));
@@ -169,6 +156,41 @@ namespace MusicOrganizer.ViewModels
                 "Added artist",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+
+        /// <summary>
+        /// Initializes validation rules for all properties.
+        /// </summary>
+        private void InitializesValidationRules()
+        {
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistName",
+            "Artist's name cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistName)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistHistory",
+            "Artist's history cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistHistory)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistPicture",
+            "Artist's picture cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistPicture)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistPicture",
+            "Artist's picture has to be an internet address.",
+            x => x.ArtistPicture != null ? x.ArtistPicture.Contains("http://")
+            || x.ArtistPicture.Contains("https://")
+            : false));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistWebsite",
+            "Artist's website cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistWebsite)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistWebsite",
+            "Artist's website has to be an internet address.",
+            x => x.ArtistWebsite != null ? x.ArtistWebsite.Contains("http://")
+            || x.ArtistWebsite.Contains("https://")
+            : false));
         }
     }
 }

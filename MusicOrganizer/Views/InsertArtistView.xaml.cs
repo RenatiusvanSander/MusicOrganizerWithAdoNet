@@ -3,6 +3,7 @@ using MusicOrganizer.ViewModels;
 
 namespace MusicOrganizer.Views
 {
+
     /// <summary>
     /// Interaktionslogik für InsertArtistView.xaml
     /// </summary>
