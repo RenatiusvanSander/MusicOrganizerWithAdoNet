@@ -169,7 +169,7 @@ namespace MusicOrganizer.ViewModels
         /// <summary>
         /// Inserts artist into databse. DatabaseHandler is doing that for us.
         /// </summary>
-        public void InsertArtistIntoDB()
+        private void InsertArtistIntoDB()
         {
             artists artist = new artists()
             {
