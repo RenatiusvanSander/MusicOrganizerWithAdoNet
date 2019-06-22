@@ -19,10 +19,14 @@ namespace MusicOrganizer.ViewModels
         {
             InitializesValidationRules();
             InsertArtistCommand = new RelayCommand(lambda => InsertArtistIntoDB(),
-                lambda => {
+                lambda =>
+                {
                     var artistExists = DatabaseHandler.ArtistExist(ArtistName);
 
-                    if(artistExists && HasErrors)
+                    /* Artist exists and HasErrors is true, disbales to insert an
+                    artist to database. User is informed via MessageBox */
+
+                    if (artistExists == true && HasErrors == true)
                     {
                         MessageBox.Show($"This {ArtistName} exists.",
                             "Artist exists",
@@ -31,9 +35,38 @@ namespace MusicOrganizer.ViewModels
                         return false;
                     }
 
-                    return !DatabaseHandler.ArtistExist(ArtistName); 
+                    // Artist is inexisting and enables to insert artist into database.
+                    return !DatabaseHandler.ArtistExist(ArtistName);
                 });
         }
+
+        /*
+        /// <summary>
+        /// Checks if artist exists and Transceives a bool for
+        /// InsertArtistCommand. If artist not exists this method returns true.
+        /// An artist has to be none duplicate in database. 
+        /// </summary>
+        /// <returns>Returns true, means artist is inexisting in database.
+        /// False means artist is already in database stored.</returns>
+        private bool CanExecuteInsertArtistCommand()
+        {
+            var artistExists = DatabaseHandler.ArtistExist(ArtistName);
+
+            /* Artist exists and HasErrors is true, disbales to insert an
+            artist to database. User is informed via MessageBox */
+        /*
+        if (artistExists == true  && HasErrors == true)
+        {
+            MessageBox.Show($"This {ArtistName} exists.",
+                "Artist exists",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            return false;
+        }
+
+        // Artist is inexisting and enables to insert artist into database.
+        return !DatabaseHandler.ArtistExist(ArtistName);
+    }*/
 
         /* private varies for properties */
         private string artistName;
