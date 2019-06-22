@@ -6,11 +6,46 @@
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
         Title="Insert Album" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="TextErrorStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate x:Name="TextErrorTemplate">
+                        <DockPanel LastChildFill="True">
+                            <AdornedElementPlaceholder>
+                                <Border BorderBrush="Red" 
+
+                                BorderThickness="2"/>
+                            </AdornedElementPlaceholder>
+                            <TextBlock FontSize="20" 
+
+                            Foreground="Red">*?*</TextBlock>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" 
+
+                Value="True">
+                    <Setter Property="ToolTip" 
+
+                    Value="{Binding RelativeSource=
+            {x:Static RelativeSource.Self},
+            Path=(Validation.Errors)[0].ErrorContent}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,26,0,0" TextWrapping="Wrap" Text="{Binding AlbumTitle}" VerticalAlignment="Top" Width="352"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,87,0,0" TextWrapping="Wrap" Text="{Binding AlbumPicture}" VerticalAlignment="Top" Width="352"/>
-        <Button Name="AddAlbumButton" Content="Add Album" HorizontalAlignment="Left" Height="51" Margin="50,271,0,0" VerticalAlignment="Top" Width="218" Click="AddAlbumButton_Click" IsEnabled="{Binding CanAddAlbum}"/>
-        <ComboBox HorizontalAlignment="Left" Height="23" Margin="50,202,0,0" ItemsSource="{Binding Artists}" SelectedItem="{Binding SelectedArtist}" VerticalAlignment="Top" Width="352"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="50,144,0,0" TextWrapping="Wrap" Text="{Binding AlbumCountTracks}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="167,22,0,0" TextWrapping="Wrap" Text="{Binding AlbumTitle, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="352" Style="{StaticResource TextErrorStyle}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="167,86,0,0" TextWrapping="Wrap" Text="{Binding AlbumPicture, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="352" Style="{StaticResource TextErrorStyle}"/>
+        <Button Name="AddAlbumButton" Content="Add Album" HorizontalAlignment="Left" Height="51" Margin="50,271,0,0" VerticalAlignment="Top" Width="218" Command="{Binding InsertAlbumCommand, Mode=OneWay}" IsEnabled="{Binding CanAddAlbum}" />
+        <ComboBox HorizontalAlignment="Left" Height="23" Margin="167,203,0,0" ItemsSource="{Binding Artists}" SelectedItem="{Binding SelectedArtist}" VerticalAlignment="Top" Width="352"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="167,148,0,0" TextWrapping="Wrap" Text="{Binding AlbumCountTracks, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextErrorStyle}" VerticalAlignment="Top" Width="352"/>
+        <Label Content="Title of album:" HorizontalAlignment="Left" Margin="50,22,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.443,-0.297" Width="85"/>
+        <Label Content="Picture of album:" HorizontalAlignment="Left" Margin="50,83,0,0" VerticalAlignment="Top" Width="103"/>
+        <Label Content="Number of tracks:" HorizontalAlignment="Left" Margin="50,146,0,0" VerticalAlignment="Top" Width="112"/>
+        <Label Content="Artist:" HorizontalAlignment="Left" Margin="50,203,0,0" VerticalAlignment="Top" Width="112"/>
     </Grid>
 </Window>

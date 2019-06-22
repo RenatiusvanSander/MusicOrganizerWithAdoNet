@@ -10,7 +10,7 @@ namespace MusicOrganizer.ViewModels
     /// <summary>
     /// Presentation logic for InsertAlbumView.
     /// </summary>
-    class InsertAlbumViewModel : ViewModelBase
+    class InsertAlbumViewModel : NotifyDataErrorInfo<InsertAlbumViewModel>
     {
 
         /// <summary>
@@ -18,7 +18,9 @@ namespace MusicOrganizer.ViewModels
         /// </summary>
         public InsertAlbumViewModel()
         {
+            InitializesCommands();
             InitializesArtists();
+            InitializesValidationRules();
         }
 
         /* private values of public properties */
@@ -42,7 +44,6 @@ namespace MusicOrganizer.ViewModels
                     !albumTitle.Equals(value))
                 {
                     albumTitle = value;
-                    CheckAndAllowAddAlbum();
                     OnPropertyChanged();
                 }
             }
@@ -62,7 +63,7 @@ namespace MusicOrganizer.ViewModels
                     !albumPicture.Equals(value))
                 {
                     albumPicture = value;
-                    CheckAndAllowAddAlbum();
+                    EnableOrDisableAddAlbumButton();
                     OnPropertyChanged();
                 }
             }
@@ -80,7 +81,7 @@ namespace MusicOrganizer.ViewModels
                 if (artistsList == null || artistsList != value)
                 {
                     artistsList = value;
-                    CheckAndAllowAddAlbum();
+                    EnableOrDisableAddAlbumButton();
                     OnPropertyChanged();
                 }
             }
@@ -100,7 +101,7 @@ namespace MusicOrganizer.ViewModels
                     !albumCountTracks.Equals(value))
                 {
                     albumCountTracks = value;
-                    CheckAndAllowAddAlbum();
+                    EnableOrDisableAddAlbumButton();
                     OnPropertyChanged();
                 }
             }
@@ -118,25 +119,35 @@ namespace MusicOrganizer.ViewModels
                 if (string.IsNullOrEmpty(selectedArtist) || !selectedArtist.Equals(value))
                 {
                     selectedArtist = value;
-                    CheckAndAllowAddAlbum();
                     OnPropertyChanged();
                 }
             }
         }
 
-        // Enables or disables button "Add Album".
+        /// <summary>
+        /// Enables or disables button "Add Album".
+        /// </summary>
         public bool CanAddAlbum { get; private set; }
 
         /// <summary>
-        /// Enables or disables button "Add Album" on InsertAlbumView.
+        /// Executes InsertAlbumIntoDB if CanExecuteInsertAlbumCommand is true.
         /// </summary>
-        private void CheckAndAllowAddAlbum()
+        public RelayCommand InsertAlbumCommand { private set; get; }
+
+        /// <summary>
+        /// Checks for HasErrors. No error sets CanAddAlbum to true.
+        /// Errors sets CanAddAlbum to false. This enables or disables the
+        /// AddAlbum button.
+        /// </summary>
+        private void EnableOrDisableAddAlbumButton()
         {
-            if (!string.IsNullOrEmpty(AlbumTitle)
+            if (!HasErrors
+                &&
+                !string.IsNullOrEmpty(AlbumTitle)
                 &&
                 !string.IsNullOrEmpty(AlbumPicture)
                 &&
-                !string.IsNullOrEmpty(SelectedArtist)
+                AlbumPicture.Length > 10
                 &&
                 !string.IsNullOrEmpty(AlbumCountTracks))
             {
@@ -152,6 +163,33 @@ namespace MusicOrganizer.ViewModels
         }
 
         /// <summary>
+        /// Allows or disables InsertAlbumCommand.
+        /// </summary>
+        private bool CanExecuteInsertAlbum(object obj = null)
+        {
+            return CanAddAlbum;
+        }
+
+        /// <summary>
+        /// Initilizes InsertAlbumCommand.
+        /// </summary>
+        private void InitializesCommands()
+        {
+
+            // Initilizes InsertAlbumCommand.
+            InsertAlbumCommand = new RelayCommand(lambda =>
+            {
+                InsertAlbumIntoDB();
+            },
+                lambda =>
+                {
+                    Predicate<object> predicate =
+                    new Predicate<object>(CanExecuteInsertAlbum);
+                    return predicate(null);
+                });
+        }
+
+        /// <summary>
         /// Initializes Artists property for the combobox.
         /// </summary>
         private void InitializesArtists()
@@ -161,12 +199,12 @@ namespace MusicOrganizer.ViewModels
             // Tries to fill artistsNames. Or throw an error.
             try
             {
-                foreach(var artist in DatabaseHandler.ReadArtists().ToArray())
+                foreach (var artist in DatabaseHandler.ReadArtists().ToArray())
                 {
                     artistsNames.Add(artist.Name);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ViewModelsErrorHandler(e);
             }
@@ -179,7 +217,7 @@ namespace MusicOrganizer.ViewModels
         /// <summary>
         /// Inserts album into database or shows an error message box.
         /// </summary>
-        public void InsertAlbumIntoDB()
+        private void InsertAlbumIntoDB()
         {
 
             /* Tries to add album into database. If this fails error is
@@ -197,6 +235,38 @@ namespace MusicOrganizer.ViewModels
             }
 
             MessageBox.Show("Album has successful been added.");
+        }
+
+        /// <summary>
+        /// Initializes all validation rules for the textboxes.
+        /// </summary>
+        private void InitializesValidationRules()
+        {
+            Rules.Add(new DelegateRule<InsertAlbumViewModel>(
+            "AlbumTitle",
+            "Title of album cannot be empty.",
+            x => !string.IsNullOrEmpty(x.AlbumTitle)));
+            Rules.Add(new DelegateRule<InsertAlbumViewModel>(
+            "AlbumTitle",
+            "Title of album must be at least one character.",
+            x => x.AlbumTitle.Length > 0 ? true : false));
+            Rules.Add(new DelegateRule<InsertAlbumViewModel>(
+            "AlbumPicture",
+            "Picture of album cannot be empty.",
+            x => !string.IsNullOrEmpty(x.AlbumPicture)));
+            Rules.Add(new DelegateRule<InsertAlbumViewModel>(
+            "AlbumPicture",
+            "Picture of album has to be internet address and is longer than 9",
+            x => x.AlbumPicture != null ?
+            (x.AlbumPicture.Contains("http://") || 
+            x.AlbumPicture.Contains("https://"))
+            && x.AlbumPicture.Length > 10
+            : false));
+            Rules.Add(new DelegateRule<InsertAlbumViewModel>(
+            "AlbumCountTracks",
+            "This has to be a number.",
+            x => int.TryParse(x.AlbumCountTracks, out var result)
+            && int.Parse(x.AlbumCountTracks) > 0));
         }
     }
 }
