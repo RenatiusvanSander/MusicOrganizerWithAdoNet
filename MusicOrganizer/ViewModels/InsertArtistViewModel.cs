@@ -21,53 +21,12 @@ namespace MusicOrganizer.ViewModels
             InsertArtistCommand = new RelayCommand(lambda => InsertArtistIntoDB(),
                 lambda =>
                 {
-                    var artistExists = DatabaseHandler.ArtistExist(ArtistName);
-
-                    /* Artist exists and HasErrors is true, disbales to insert an
-                    artist to database. User is informed via MessageBox */
-
-                    if (artistExists == true && HasErrors == true)
-                    {
-                        MessageBox.Show($"This {ArtistName} exists.",
-                            "Artist exists",
-                            MessageBoxButton.OK,
-                            MessageBoxImage.Error);
-                        return false;
-                    }
-
-                    // Artist is inexisting and enables to insert artist into database.
-                    return !DatabaseHandler.ArtistExist(ArtistName);
+                    Predicate<object> predicate =
+                    new Predicate<object>(CanExecuteInsertArtistCommand);
+                    return predicate(null);
                 });
         }
-
-        /*
-        /// <summary>
-        /// Checks if artist exists and Transceives a bool for
-        /// InsertArtistCommand. If artist not exists this method returns true.
-        /// An artist has to be none duplicate in database. 
-        /// </summary>
-        /// <returns>Returns true, means artist is inexisting in database.
-        /// False means artist is already in database stored.</returns>
-        private bool CanExecuteInsertArtistCommand()
-        {
-            var artistExists = DatabaseHandler.ArtistExist(ArtistName);
-
-            /* Artist exists and HasErrors is true, disbales to insert an
-            artist to database. User is informed via MessageBox */
-        /*
-        if (artistExists == true  && HasErrors == true)
-        {
-            MessageBox.Show($"This {ArtistName} exists.",
-                "Artist exists",
-                MessageBoxButton.OK,
-                MessageBoxImage.Error);
-            return false;
-        }
-
-        // Artist is inexisting and enables to insert artist into database.
-        return !DatabaseHandler.ArtistExist(ArtistName);
-    }*/
-
+                
         /* private varies for properties */
         private string artistName;
         private string artistHistory;
@@ -163,6 +122,33 @@ namespace MusicOrganizer.ViewModels
 
         // Enables or diasbles Add artist Button on InsertArtistView.
         public bool CanInsertArtistIntoDB { get; private set; }
+
+        /// <summary>
+        /// This methods checks if an artist exists. True means artist is not
+        /// in database stored and allows to add artist.
+        /// </summary>
+        /// <param name="obj">The object can be a object and is implemented to
+        /// satisfies methods of RelayCommand</param>
+        /// <returns>Return the method CanExecuteInsertArtistCommand</returns>
+        private bool CanExecuteInsertArtistCommand(object obj = null)
+        {
+            var artistExists = DatabaseHandler.ArtistExist(ArtistName);
+
+            /* Artist exists and HasErrors is true, disbales to insert an
+            artist to database. User is informed via MessageBox */
+
+            if (artistExists == true && HasErrors == true)
+            {
+                MessageBox.Show($"This {ArtistName} exists.",
+                    "Artist exists",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+                return false;
+            }
+
+            // Artist is inexisting and enables to insert artist into database.
+            return !DatabaseHandler.ArtistExist(ArtistName);
+        }
 
         /// <summary>
         /// Enables button Add Artist on InsertArtistView. Four properties
