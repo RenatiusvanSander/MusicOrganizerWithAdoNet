@@ -6,12 +6,50 @@
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
         Title="Insert Artist" Height="450" Width="800">
+    <Window.Resources>
+        <Style x:Key="TextErrorStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate x:Name="TextErrorTemplate">
+                        <DockPanel LastChildFill="True">
+                            <AdornedElementPlaceholder>
+                                <Border BorderBrush="Red" 
+
+                                BorderThickness="2"/>
+                            </AdornedElementPlaceholder>
+                            <TextBlock FontSize="20" 
+
+                            Foreground="Red">*?*</TextBlock>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" 
+
+                Value="True">
+                    <Setter Property="ToolTip" 
+
+                    Value="{Binding RelativeSource=
+            {x:Static RelativeSource.Self},
+            Path=(Validation.Errors)[0].ErrorContent}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,22,0,0" TextWrapping="Wrap" Text="{Binding ArtistName}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="71" Margin="63,82,0,0" TextWrapping="NoWrap" Text="{Binding ArtistHistory}" VerticalAlignment="Top" Width="460"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,189,0,0" TextWrapping="NoWrap" Text="{Binding ArtistPicture}" VerticalAlignment="Top" Width="460"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,249,0,0" TextWrapping="NoWrap" Text="{Binding ArtistWebsite}" VerticalAlignment="Top" Width="120"/>
-        <Button Name="AddArtistButton" Content="Add artist" HorizontalAlignment="Left" Height="33" Margin="63,303,0,0" VerticalAlignment="Top" Width="172" IsEnabled="{Binding CanInsertArtistIntoDB}" Click="InsertArtistIntoDB_Click"/>
+
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="146,25,0,0" TextWrapping="NoWrap" Style="{StaticResource TextErrorStyle}"                 
+
+   Text="{Binding Path=ArtistName, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="377"/>
+        <TextBox HorizontalAlignment="Left" Height="71" Margin="63,101,0,0" TextWrapping="NoWrap" Text="{Binding ArtistHistory, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="460" Style="{StaticResource TextErrorStyle}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="197,197,0,0" TextWrapping="NoWrap" Text="{Binding ArtistPicture, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="326" Style="{StaticResource TextErrorStyle}"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="161,239,0,0" TextWrapping="NoWrap" Text="{Binding ArtistWebsite, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="362" Style="{StaticResource TextErrorStyle}"/>
+        <Button Name="AddArtistButton" Content="Add artist" HorizontalAlignment="Left" Height="33" Margin="63,303,0,0" VerticalAlignment="Top" Width="172" IsEnabled="{Binding CanInsertArtistIntoDB, Mode=OneWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Command="{Binding InsertArtistCommand}"/>
+        <Label Content="Artist's name:" HorizontalAlignment="Left" Margin="63,25,0,0" VerticalAlignment="Top" RenderTransformOrigin="-3.76,0.375"/>
+        <Label Content="Artist's history:" HorizontalAlignment="Left" Margin="63,75,0,0" VerticalAlignment="Top"/>
+        <Label Content="Artist's pciture address:" HorizontalAlignment="Left" Height="23" Margin="63,197,0,0" VerticalAlignment="Top" Width="134"/>
+        <Label Content="Artist's website:" HorizontalAlignment="Left" Height="23" Margin="63,239,0,0" VerticalAlignment="Top" Width="98"/>
 
     </Grid>
 </Window>

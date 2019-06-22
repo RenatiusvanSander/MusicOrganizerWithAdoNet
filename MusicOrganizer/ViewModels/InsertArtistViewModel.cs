@@ -9,7 +9,7 @@ namespace MusicOrganizer.ViewModels
     /// <summary>
     /// Presentation logic for InsertArtistView.
     /// </summary>
-    public class InsertArtistViewModel : ViewModelBase
+    public class InsertArtistViewModel : NotifyDataErrorInfo<InsertArtistViewModel>
     {
 
         /// <summary>
@@ -17,8 +17,56 @@ namespace MusicOrganizer.ViewModels
         /// </summary>
         public InsertArtistViewModel()
         {
+            InitializesValidationRules();
+            InsertArtistCommand = new RelayCommand(lambda => InsertArtistIntoDB(),
+                lambda =>
+                {
+                    var artistExists = DatabaseHandler.ArtistExist(ArtistName);
 
+                    /* Artist exists and HasErrors is true, disbales to insert an
+                    artist to database. User is informed via MessageBox */
+
+                    if (artistExists == true && HasErrors == true)
+                    {
+                        MessageBox.Show($"This {ArtistName} exists.",
+                            "Artist exists",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return false;
+                    }
+
+                    // Artist is inexisting and enables to insert artist into database.
+                    return !DatabaseHandler.ArtistExist(ArtistName);
+                });
         }
+
+        /*
+        /// <summary>
+        /// Checks if artist exists and Transceives a bool for
+        /// InsertArtistCommand. If artist not exists this method returns true.
+        /// An artist has to be none duplicate in database. 
+        /// </summary>
+        /// <returns>Returns true, means artist is inexisting in database.
+        /// False means artist is already in database stored.</returns>
+        private bool CanExecuteInsertArtistCommand()
+        {
+            var artistExists = DatabaseHandler.ArtistExist(ArtistName);
+
+            /* Artist exists and HasErrors is true, disbales to insert an
+            artist to database. User is informed via MessageBox */
+        /*
+        if (artistExists == true  && HasErrors == true)
+        {
+            MessageBox.Show($"This {ArtistName} exists.",
+                "Artist exists",
+                MessageBoxButton.OK,
+                MessageBoxImage.Error);
+            return false;
+        }
+
+        // Artist is inexisting and enables to insert artist into database.
+        return !DatabaseHandler.ArtistExist(ArtistName);
+    }*/
 
         /* private varies for properties */
         private string artistName;
@@ -108,6 +156,11 @@ namespace MusicOrganizer.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand InsertArtistCommand { private set; get; }
+
         // Enables or diasbles Add artist Button on InsertArtistView.
         public bool CanInsertArtistIntoDB { get; private set; }
 
@@ -121,20 +174,7 @@ namespace MusicOrganizer.ViewModels
             /* Checks for all strings are not null or empty and sets
              * CanInsertArtistIntoDB to true or false. True activates
              * the button on InsertArtistView. */
-            if (!string.IsNullOrEmpty(ArtistName)
-                &&
-                !string.IsNullOrEmpty(ArtistHistory)
-                &&
-                !string.IsNullOrEmpty(ArtistPicture)
-                &&
-                !string.IsNullOrEmpty(ArtistWebsite))
-            {
-                CanInsertArtistIntoDB = true;
-            }
-            else
-            {
-                CanInsertArtistIntoDB = false;
-            }
+            CanInsertArtistIntoDB = !HasErrors ? true : false;
 
             // Update property CanInsertArtistIntoDB.
             OnPropertyChanged(nameof(CanInsertArtistIntoDB));
@@ -169,6 +209,41 @@ namespace MusicOrganizer.ViewModels
                 "Added artist",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
+        }
+
+        /// <summary>
+        /// Initializes validation rules for all properties.
+        /// </summary>
+        private void InitializesValidationRules()
+        {
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistName",
+            "Artist's name cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistName)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+                 "ArtistHistory",
+                 "Artist's history cannot be empty.",
+                 x => !string.IsNullOrEmpty(x.ArtistHistory)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistPicture",
+            "Artist's picture cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistPicture)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistPicture",
+            "Artist's picture has to be an internet address.",
+            x => x.ArtistPicture != null ? x.ArtistPicture.Contains("http://")
+            || x.ArtistPicture.Contains("https://")
+            : false));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistWebsite",
+            "Artist's website cannot be empty.",
+            x => !string.IsNullOrEmpty(x.ArtistWebsite)));
+            Rules.Add(new DelegateRule<InsertArtistViewModel>(
+            "ArtistWebsite",
+            "Artist's website has to be an internet address.",
+            x => x.ArtistWebsite != null ? x.ArtistWebsite.Contains("http://")
+            || x.ArtistWebsite.Contains("https://")
+            : false));
         }
     }
 }

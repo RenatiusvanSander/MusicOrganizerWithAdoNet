@@ -137,6 +137,29 @@ namespace MusicOrganizer.Models.LogicModels
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="artistName"></param>
+        /// <returns></returns>
+        public static bool ArtistExist(string artistName)
+        {
+
+            // Tries to get artist and return true, because artist is not existent in database.
+            try
+            {
+                var artistFromDatabase = musicDBModel.artists
+                    .Where(x => x.Name == artistName)
+                    .Single();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
+         }
+
+        /// <summary>
         /// Throws inner connection error inside an exception.
         /// </summary>
         /// <param name="exception"></param>
