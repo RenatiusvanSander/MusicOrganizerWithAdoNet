@@ -18,6 +18,21 @@ namespace MusicOrganizer.ViewModels
         public InsertArtistViewModel()
         {
             InitializesValidationRules();
+            InsertArtistCommand = new RelayCommand(lambda => InsertArtistIntoDB(),
+                lambda => {
+                    var artistExists = DatabaseHandler.ArtistExist(ArtistName);
+
+                    if(artistExists && HasErrors)
+                    {
+                        MessageBox.Show($"This {ArtistName} exists.",
+                            "Artist exists",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return false;
+                    }
+
+                    return !DatabaseHandler.ArtistExist(ArtistName); 
+                });
         }
 
         /* private varies for properties */
@@ -108,6 +123,11 @@ namespace MusicOrganizer.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        public RelayCommand InsertArtistCommand { private set; get; }
+
         // Enables or diasbles Add artist Button on InsertArtistView.
         public bool CanInsertArtistIntoDB { get; private set; }
 
@@ -121,7 +141,7 @@ namespace MusicOrganizer.ViewModels
             /* Checks for all strings are not null or empty and sets
              * CanInsertArtistIntoDB to true or false. True activates
              * the button on InsertArtistView. */
-            CanInsertArtistIntoDB = HasErrors == false ? false : true;
+            CanInsertArtistIntoDB = !HasErrors ? true : false;
 
             // Update property CanInsertArtistIntoDB.
             OnPropertyChanged(nameof(CanInsertArtistIntoDB));
@@ -168,9 +188,9 @@ namespace MusicOrganizer.ViewModels
             "Artist's name cannot be empty.",
             x => !string.IsNullOrEmpty(x.ArtistName)));
             Rules.Add(new DelegateRule<InsertArtistViewModel>(
-            "ArtistHistory",
-            "Artist's history cannot be empty.",
-            x => !string.IsNullOrEmpty(x.ArtistHistory)));
+                 "ArtistHistory",
+                 "Artist's history cannot be empty.",
+                 x => !string.IsNullOrEmpty(x.ArtistHistory)));
             Rules.Add(new DelegateRule<InsertArtistViewModel>(
             "ArtistPicture",
             "Artist's picture cannot be empty.",

@@ -21,16 +21,5 @@ namespace MusicOrganizer.Views
         }
 
         private InsertArtistViewModel insertArtistViewModel;
-
-        /// <summary>
-        /// Inserts an artist on button click "Add Artist" into database table
-        /// artist.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">RoutedEventArgs</param>
-        private void InsertArtistIntoDB_Click(object sender, RoutedEventArgs e)
-        {
-            insertArtistViewModel.InsertArtistIntoDB();
-        }
     }
 }
