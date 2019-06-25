@@ -1,6 +1,7 @@
 ﻿using MusicOrganizer.Models.LogicModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 
 namespace MusicOrganizer.ViewModels
@@ -9,7 +10,7 @@ namespace MusicOrganizer.ViewModels
     /// <summary>
     /// Presentation logic for InsertTrackView.
     /// </summary>
-    public class InsertTrackViewModel : ViewModelBase
+    public class InsertTrackViewModel : NotifyDataErrorInfo<InsertTrackViewModel>
     {
 
         /// <summary>
@@ -18,8 +19,10 @@ namespace MusicOrganizer.ViewModels
         /// </summary>
         public InsertTrackViewModel()
         {
+            InitializesCommands();
             InitializesArtists();
             InitializesAlbum();
+            InitializesValidationRules();
         }
 
         /* private varies for the properties */
@@ -37,6 +40,12 @@ namespace MusicOrganizer.ViewModels
         private string trackFilepath;
         private string trackSelectedArtist;
         private string trackSelectedAlbum;
+
+        /// <summary>
+        /// Databinding for insert a track into database.
+        /// Initiated via button add track.
+        /// </summary>
+        public RelayCommand InsertTrackCommand { private set; get; }
 
         // Store and updates belonging album of track.
         public List<string> TrackAlbum
@@ -328,7 +337,33 @@ namespace MusicOrganizer.ViewModels
         {
 
             // Enables if all properties are not null.
-            if (!string.IsNullOrEmpty(TrackSelectedAlbum)
+            if (!HasErrors)
+            {
+                CanAddTrack = true;
+            }
+            else
+            {
+                CanAddTrack = false;
+            }
+
+            // Updates property CanAddTrack.
+            OnPropertyChanged(nameof(CanAddTrack));
+        }
+
+        /// <summary>
+        /// Allows execution of InsertTrackCommand RelayCommand object.
+        /// </summary>
+        /// <param name="obj">object is implemented to satisfy ICommand
+        /// interface implementation. It is set to null by parameters list
+        /// of CanExecuteInsertTrackCommand</param>
+        /// <returns></returns>
+        private bool CanExecuteInsertTrackCommand(object obj = null)
+        {
+
+            // Enables CanExecute.
+            if (CanAddTrack
+                &&
+                !string.IsNullOrEmpty(TrackSelectedAlbum)
                 &&
                 !string.IsNullOrEmpty(TrackSelectedArtist)
                 &&
@@ -352,21 +387,16 @@ namespace MusicOrganizer.ViewModels
                 &&
                 !string.IsNullOrEmpty(TrackFilepath))
             {
-                CanAddTrack = true;
-            }
-            else
-            {
-                CanAddTrack = false;
+                return true;
             }
 
-            // Updates property CanAddTrack.
-            OnPropertyChanged(nameof(CanAddTrack));
+            return false;
         }
 
         /// <summary>
         /// Inserts track into database or informs user about an error message.
         /// </summary>
-        public void InsertTrackIntoDB()
+        private void InsertTrackIntoDB()
         {
 
             // Tries to add track into database.
@@ -395,6 +425,23 @@ namespace MusicOrganizer.ViewModels
             {
                 ViewModelsErrorHandler(e);
             }
+        }
+
+        /// <summary>
+        /// Initializes all Commands, which are type of RelayCommand.
+        /// </summary>
+        private void InitializesCommands()
+        {
+            InsertTrackCommand = new RelayCommand(lambda =>
+            {
+                InsertTrackIntoDB();
+            },
+                lambda =>
+                {
+                    Predicate<object> predicate =
+                    new Predicate<object>(CanExecuteInsertTrackCommand);
+                    return predicate(null);
+                });
         }
 
         /// <summary>
@@ -445,6 +492,84 @@ namespace MusicOrganizer.ViewModels
             // Copy values.
             TrackAlbum = albumsNames;
             TrackSelectedAlbum = albumsNames.ToArray()[0];
+        }
+
+        /// <summary>
+        /// Initializes validation rules in InsertTrackViewModel object
+        /// </summary>
+        private void InitializesValidationRules()
+        {
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+            "TrackTitle",
+            "Title of track cannot be empty.",
+            x => !string.IsNullOrEmpty(x.TrackTitle)));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+            "TrackTitle",
+            "Title of track cannothas to be two characters minimum.",
+            x => x.TrackTitle.Length > 1));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+            "TrackDuration",
+            "Duration has to contain minutes and seconds separated by :.",
+            x => !string.IsNullOrEmpty(x.TrackDuration) ?
+            TimeSpan.TryParse(x.TrackDuration, out var result) : false));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+           "TrackAlbumPosition",
+           "Position of track cannot be duplicated and has to be a number.",
+           x => !string.IsNullOrEmpty(x.TrackAlbumPosition) && int
+           .TryParse(x.TrackAlbumPosition, out var result) ?
+           DatabaseHandler.TrackAlbumPositionIsNoDuplicate(
+               x.TrackAlbumPosition,
+               x.TrackSelectedArtist,
+               x.TrackSelectedAlbum)
+               : false));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+           "TrackComposer",
+           "Composer cannot be empty.",
+           x => !string.IsNullOrEmpty(x.TrackComposer)
+           &&
+           x.TrackComposer.Length > 1));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackDescription",
+                "Description cannot be empty.",
+                x => !string.IsNullOrEmpty(x.TrackDescription)));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackDiscNumber",
+                "Number of disc has to be an integer.",
+                x => !string.IsNullOrEmpty(TrackDiscNumber) ?
+                int.TryParse(x.TrackDiscNumber, out var result)
+                &&
+                int.Parse(x.TrackDiscNumber) > 0 : false));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackGenre",
+                "Genre of track cannot be empty.",
+                x => !string.IsNullOrEmpty(x.TrackGenre)
+                ||
+                x.TrackGenre.Length > 2));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackLyricist",
+                "Lyricist cannot be empty.",
+                x => !string.IsNullOrEmpty(x.TrackLyricist)));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackBPM",
+                "BPM has to be point or complete number.",
+                x => int.TryParse(x.TrackBPM, out var result)
+                ||
+                double.TryParse(x.TrackBPM, out var result2)));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackBPM",
+                "BPM has to be greater than 0.",
+                x => !string.IsNullOrEmpty(TrackBPM) ?
+                int.Parse(x.TrackBPM) > 0 || double.Parse(x.TrackBPM) > 0.1
+                : false));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackFilepath",
+                "File path cannot be empty.",
+                x => !string.IsNullOrEmpty(x.TrackFilepath)));
+            Rules.Add(new DelegateRule<InsertTrackViewModel>(
+                "TrackFilepath",
+                "File path has to exist.",
+                x => !string.IsNullOrEmpty(TrackFilepath) ?
+                File.Exists(x.TrackFilepath) : false));
         }
     }
 }

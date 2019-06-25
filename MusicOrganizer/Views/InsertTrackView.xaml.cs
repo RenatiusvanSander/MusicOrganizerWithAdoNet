@@ -23,16 +23,6 @@ namespace MusicOrganizer.Views
         private InsertTrackViewModel insertTrackViewModel;
 
         /// <summary>
-        /// Inserts a tracl into the database.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">RoutedEventArgs</param>
-        private void AddTrackButton_Click(object sender, RoutedEventArgs e)
-        {
-            insertTrackViewModel.InsertTrackIntoDB();
-        }
-
-        /// <summary>
         /// Adds arist into database.
         /// </summary>
         /// <param name="sender">object</param>

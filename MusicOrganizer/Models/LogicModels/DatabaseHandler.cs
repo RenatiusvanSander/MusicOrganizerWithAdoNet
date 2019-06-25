@@ -61,7 +61,7 @@ namespace MusicOrganizer.Models.LogicModels
                     .Where(albumTracks => albumTracks.album_id == album_id)
                     .ToList();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThrowException(e);
             }
@@ -84,7 +84,7 @@ namespace MusicOrganizer.Models.LogicModels
 
                 musicDBModel.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThrowException(e);
             }
@@ -137,10 +137,11 @@ namespace MusicOrganizer.Models.LogicModels
         }
 
         /// <summary>
-        /// 
+        /// Checks if an artist exists and return true for exist.
         /// </summary>
-        /// <param name="artistName"></param>
-        /// <returns></returns>
+        /// <param name="artistName">Artist's name as string.</param>
+        /// <returns>Returns true for artist exists in database, else it is
+        /// false.</returns>
         public static bool ArtistExist(string artistName)
         {
 
@@ -157,7 +158,7 @@ namespace MusicOrganizer.Models.LogicModels
             }
 
             return true;
-         }
+        }
 
         /// <summary>
         /// Throws inner connection error inside an exception.
@@ -202,7 +203,7 @@ namespace MusicOrganizer.Models.LogicModels
                 // Saves changes into database.
                 musicDBModel.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThrowException(e);
             }
@@ -457,10 +458,48 @@ namespace MusicOrganizer.Models.LogicModels
                 // Saves changes.
                 musicDBModel.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 ThrowException(e);
             }
+        }
+
+        /// <summary>
+        /// Checks for a duplicate in positioning.
+        /// </summary>
+        /// <param name="trackAlbumPosition">Position on tracklist of album as
+        /// string number.</param>
+        /// <param name="trackSelectedArtist">Selected artist from user as
+        /// string.</param>
+        /// <param name="trackSelectedAlbum">Selected album from user as string.</param>
+        /// <returns>Returns true then there is not any duplicate. False means
+        /// there are duplicates.</returns>
+        public static bool TrackAlbumPositionIsNoDuplicate(
+            string trackAlbumPosition,
+            string trackSelectedArtist,
+            string trackSelectedAlbum)
+        {
+
+            /* Tries to get a track containing the free parameters from method
+             * parameters list.
+             */
+            try
+            {
+                var track = musicDBModel.tracks
+                    .Where(t => t.album_position == int
+                    .Parse(trackAlbumPosition)
+                    &&
+                    t.artists.Name == trackSelectedArtist
+                    &&
+                    t.albums.title == trackSelectedAlbum)
+                    .Single();
+            }
+            catch (Exception)
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
     }
