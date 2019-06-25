@@ -5,23 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MusicOrganizer.Views"
         mc:Ignorable="d"
-        Title="Insert Track" Height="450" Width="800">
+        Title="Insert Track" Height="768" Width="1024">
+    <Window.Resources>
+        <Style x:Key="TextErrorStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate x:Name="TextErrorTemplate">
+                        <DockPanel LastChildFill="True">
+                            <AdornedElementPlaceholder>
+                                <Border BorderBrush="Red" 
+
+                                BorderThickness="2"/>
+                            </AdornedElementPlaceholder>
+                            <TextBlock FontSize="20" 
+
+                            Foreground="Red">*?*</TextBlock>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" 
+
+                Value="True">
+                    <Setter Property="ToolTip" 
+
+                    Value="{Binding RelativeSource=
+            {x:Static RelativeSource.Self},
+            Path=(Validation.Errors)[0].ErrorContent}"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
     <Grid>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,18,0,0" TextWrapping="Wrap" Text="{Binding TrackTitle}" VerticalAlignment="Top" Width="120"/>
-        <ComboBox HorizontalAlignment="Left" Height="23" Margin="63,58,0,0" VerticalAlignment="Top" Width="218" ItemsSource="{Binding TrackAlbum}" SelectedItem="{Binding TrackSelectedAlbum}"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,100,0,0" TextWrapping="NoWrap" Text="{Binding TrackDuration}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,144,0,0" TextWrapping="NoWrap" Text="{Binding TrackAlbumPosition}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,185,0,0" TextWrapping="NoWrap" Text="{Binding TrackComposer}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,229,0,0" TextWrapping="NoWrap" Text="{Binding TrackDescription}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,373,0,0" TextWrapping="NoWrap" Text="{Binding TrackDiscNumber}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,274,0,0" TextWrapping="NoWrap" Text="{Binding TrackGenre}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="63,325,0,0" TextWrapping="NoWrap" Text="{Binding TrackLyricist}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="222,229,0,0" TextWrapping="NoWrap" Text="{Binding TrackFilepath}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="222,185,0,0" TextWrapping="NoWrap" Text="{Binding TrackBPM}" VerticalAlignment="Top" Width="120"/>
-        <Button Name="addTrackButton" Content="Add Track" HorizontalAlignment="Left" Margin="222,372,0,0" VerticalAlignment="Top" Width="134" Height="24" IsEnabled="{Binding CanAddTrack}" Click="AddTrackButton_Click"/>
-        <ComboBox HorizontalAlignment="Left" Margin="222,139,0,0" VerticalAlignment="Top" Width="248" Height="28" ItemsSource="{Binding TrackArtist}" SelectedItem="{Binding TrackSelectedArtist}"/>
-        <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="28" Margin="475,139,0,0" VerticalAlignment="Top" Width="117" Click="AddArtistButton_Click"/>
-        <Button Name ="addAlbumButton" Content="Add Album" HorizontalAlignment="Left" Margin="290,54,0,0" VerticalAlignment="Top" Width="150" Height="29" RenderTransformOrigin="0.5,0.5" Click="AddAlbumButton_Click">
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="135,19,0,0" TextWrapping="NoWrap" Text="{Binding TrackTitle, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="473" Style="{StaticResource TextErrorStyle}"/>
+        <ComboBox HorizontalAlignment="Left" Height="23" Margin="138,56,0,0" VerticalAlignment="Top" Width="218" ItemsSource="{Binding TrackAlbum}" SelectedItem="{Binding TrackSelectedAlbum}"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="174,100,0,0" TextWrapping="NoWrap" Text="{Binding TrackDuration, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="434"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="174,144,0,0" TextWrapping="NoWrap" Text="{Binding TrackAlbumPosition, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="75"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="174,185,0,0" TextWrapping="NoWrap" Text="{Binding TrackComposer, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="362"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="45" Margin="156,229,0,0" TextWrapping="NoWrap" Text="{Binding TrackDescription, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="362"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="164,372,0,0" TextWrapping="NoWrap" Text="{Binding TrackDiscNumber, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="125,288,0,0" TextWrapping="NoWrap" Text="{Binding TrackGenre, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="231"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="135,329,0,0" TextWrapping="NoWrap" Text="{Binding TrackLyricist, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="401"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="603,229,0,0" TextWrapping="NoWrap" Text="{Binding TrackFilepath, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="394"/>
+        <TextBox Style="{StaticResource TextErrorStyle}" HorizontalAlignment="Left" Height="23" Margin="619,185,0,0" TextWrapping="NoWrap" Text="{Binding TrackBPM, Mode=TwoWay, ValidatesOnNotifyDataErrors=True, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="78"/>
+        <Button Name="addTrackButton" Content="Add Track" HorizontalAlignment="Left" Margin="548,372,0,0" VerticalAlignment="Top" Width="134" Height="24" IsEnabled="{Binding CanAddTrack}" Command="{Binding InsertTrackCommand, Mode=OneWay}"/>
+        <ComboBox HorizontalAlignment="Left" Margin="619,139,0,0" VerticalAlignment="Top" Width="248" Height="28" ItemsSource="{Binding TrackArtist}" SelectedItem="{Binding TrackSelectedArtist}"/>
+        <Button Name="addArtistButton" Content="Add Artist" HorizontalAlignment="Left" Height="28" Margin="880,139,0,0" VerticalAlignment="Top" Width="117" Click="AddArtistButton_Click"/>
+        <Button Name ="addAlbumButton" Content="Add Album" HorizontalAlignment="Left" Margin="364,53,0,0" VerticalAlignment="Top" Width="150" Height="29" RenderTransformOrigin="0.5,0.5" Click="AddAlbumButton_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -31,6 +62,18 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
+        <Label Content="Track title:" HorizontalAlignment="Left" Margin="63,19,0,0" VerticalAlignment="Top" Width="67"/>
+        <Label Content="Album:" HorizontalAlignment="Left" Margin="63,53,0,0" VerticalAlignment="Top" RenderTransformOrigin="-2.734,-1.25" Width="120"/>
+        <Label Content="Duration of track:" HorizontalAlignment="Left" Margin="63,100,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label Content="Position on List:" HorizontalAlignment="Left" Margin="63,144,0,0" VerticalAlignment="Top" RenderTransformOrigin="-4.172,0.312" Width="106"/>
+        <Label Content="Track Artist:" HorizontalAlignment="Left" Height="26" Margin="538,144,0,0" VerticalAlignment="Top" Width="70"/>
+        <Label Content="Composer:" HorizontalAlignment="Left" Margin="63,185,0,0" VerticalAlignment="Top" Width="76"/>
+        <Label Content="BPM:" HorizontalAlignment="Left" Margin="564,185,0,0" VerticalAlignment="Top" Width="44"/>
+        <Label Content="Description:" HorizontalAlignment="Left" Margin="63,229,0,0" VerticalAlignment="Top" Width="106"/>
+        <Label Content="File Path:" HorizontalAlignment="Left" Height="26" Margin="538,229,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label Content="Genre:" HorizontalAlignment="Left" Margin="63,288,0,0" VerticalAlignment="Top" Width="49"/>
+        <Label Content="Lyricist:" HorizontalAlignment="Left" Margin="63,329,0,0" VerticalAlignment="Top" Width="58"/>
+        <Label Content="Number of disc:" HorizontalAlignment="Left" Margin="63,372,0,0" VerticalAlignment="Top" Width="120"/>
 
     </Grid>
 </Window>
